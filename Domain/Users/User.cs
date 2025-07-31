@@ -14,11 +14,8 @@ namespace Domain.Users
         public string Password { get; private set; }
         public long Balance { get; private set; }
 
-        private User()
-        {
+        private User() { }
 
-        }
-       
         public User(string nickName, string email, string password)
         {
             NickName = nickName;
@@ -28,16 +25,16 @@ namespace Domain.Users
             SetUpdate();
         }
 
-        #region METHODS
         public void UpdateNickName(string newNick)
         {
             NickName = newNick;
             SetUpdate();
         }
 
-        public void UpdateEmail(string newEmail) { 
-            Email = newEmail; 
-            SetUpdate(); 
+        public void UpdateEmail(string newEmail)
+        {
+            Email = newEmail;
+            SetUpdate();
         }
 
         public void UpdatePassword(string newPassword)
@@ -45,7 +42,5 @@ namespace Domain.Users
             Password = newPassword;
             SetUpdate();
         }
-
-        #endregion
     }
 }

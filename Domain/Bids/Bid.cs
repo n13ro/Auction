@@ -12,23 +12,22 @@ namespace Domain.Bids
     public class Bid : BaseEntity
     {
         public Lot CurrentLot { get; private set; }
-        public long Amount { get; }
-        public User User { get; }
-        public DateTime PlacedAt { get; }
+        public User User { get; private set; }
+        public long Amount { get; private set; }
+        public DateTime PlacedAt { get; private set; }
 
-        public Bid(long amount, User user, Lot currentLot, DateTime timestamp)
+        private Bid() { }
+        public Bid(User user, long amount, Lot currentLot)
         {
-            if (amount is 0) throw new ArgumentNullException(nameof(amount));
-            if (user is null) throw new ArgumentNullException(nameof(user));
-
-            CurrentLot = currentLot;
             if (amount >= currentLot.MinBet) Amount = amount;
-            else throw new Exception("You trying to place a bid, that is lower than minimum!");
+            else throw new Exception("Amount <=");
+
+            int Id = user.Id;
             User = user;
-            PlacedAt = timestamp;
-            int ID = user.Id;
+            CurrentLot = currentLot;
+            PlacedAt = DateTime.Now;
         }
 
-   
+
     }
 }

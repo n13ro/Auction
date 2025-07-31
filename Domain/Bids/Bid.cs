@@ -11,23 +11,27 @@ namespace Domain.Bids
 {
     public class Bid : BaseEntity
     {
-        public Lot CurrentLot { get; private set; }
-        public User User { get; private set; }
+        public int UserId { get; private set; }
+        public int LotId { get;private set; }
         public long Amount { get; private set; }
         public DateTime PlacedAt { get; private set; }
+        public BidStatus Status { get; private set; }
+
 
         private Bid() { }
-        public Bid(User user, long amount, Lot currentLot)
+        public Bid(int userId, int lotId, long amount)
         {
-            if (amount >= currentLot.MinBet) Amount = amount;
-            else throw new Exception("Amount <=");
-
-            int Id = user.Id;
-            User = user;
-            CurrentLot = currentLot;
-            PlacedAt = DateTime.Now;
+            userId = UserId;
+            lotId = LotId;
+            amount = Amount;
+            PlacedAt = DateTime.UtcNow;
+            SetUpdate();
         }
 
-
+        public enum BidStatus
+        {
+            Winnig,
+            Losing
+        }
     }
 }

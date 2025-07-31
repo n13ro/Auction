@@ -10,4 +10,14 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Persistent\Configurations\" />
+    <Folder Include="Persistent\Context\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.7" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.7" />
+  </ItemGroup>
+
 </Project>

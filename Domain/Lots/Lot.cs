@@ -1,5 +1,6 @@
 ﻿using Domain.Bids;
 using Domain.Common;
+using Domain.Users;
 using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Lots
@@ -15,7 +16,8 @@ namespace Domain.Lots
         public bool IsExtraTime { get; private set; }
         public LotStatus Status { get; private set; } = LotStatus.Active;
         //public int CurrentBids { get; private set; }
-        public List<Bid> Bids { get; private set; } = new List<Bid>();
+        private List<Bid> _bids = new List<Bid>();
+        public ICollection<Bid> Bids => _bids;
 
         private Lot() { }
 
@@ -45,9 +47,8 @@ namespace Domain.Lots
             DateTime.UtcNow <= EndTime;
         //
 
-        public void ExtendTime(Bid bid)
+        public void ExtendTime()
         {
-            Bids.Add(bid);
             if (IsExtraTime)
             {
                 EndTime = EndTime.Add(TimeSpan.FromMinutes(2));
@@ -66,5 +67,7 @@ namespace Domain.Lots
             Active,
             Closed
         }
+
+        
     }
 }

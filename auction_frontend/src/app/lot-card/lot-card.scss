@@ -1,0 +1,75 @@
+/* Общие стили для карточки */
+.card {
+  width: 350px; /* или любой другой нужный размер */
+  background-color: #000; /* черный фон */
+  border-radius: 10px;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+  color: #fff;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+margin-right: 30px;
+}
+
+/* Верхняя часть с изображением и временем */
+.card-header {
+  position: relative;
+}
+
+.card-header img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+/* Время в верхнем левом углу */
+.time-label {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 4px 8px;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* Контейнер для остальной информации */
+.card-content {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Название предмета */
+.item-title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* Цена */
+.price {
+  font-size: 20px;
+  font-weight: bold;
+  color: #ff7f50; /* оранжевый цвет для цены */
+}
+
+/* Кнопка */
+.review-button {
+  padding: 12px;
+  background-color: #fff;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background-color 0.3s;
+}
+
+.review-button:hover {
+  background-color: #f0f0f0;
+}

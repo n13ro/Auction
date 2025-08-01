@@ -1,9 +1,9 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-
+import { LotMap } from './lot-map/lot-map'
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, LotMap],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

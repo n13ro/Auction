@@ -7,7 +7,6 @@ namespace Domain.Common
     {
         [Key]
         public int Id { get; private set; }
-
         public DateTime CreateAt { get; protected set; }
         public DateTime UpdateAt { get; protected set; }
 

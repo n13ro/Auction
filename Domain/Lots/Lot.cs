@@ -6,6 +6,7 @@ namespace Domain.Lots
 {
     public class Lot : BaseEntity
     {
+
         public string Name { get; private set; }
         public string Description { get; private set; }
         public long StartingPrice { get; private set; }
@@ -58,8 +59,10 @@ namespace Domain.Lots
 
         public void CloseLot()
         {
-            if(!IsActive)
-            Status = LotStatus.Closed;
+            if (!IsActive)
+            {
+                Status = LotStatus.Closed;
+            }
 
         }
 

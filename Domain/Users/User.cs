@@ -1,12 +1,11 @@
 ﻿using Domain.Bids;
 using Domain.Common;
 using Domain.Lots;
-using System;
-using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+using static Domain.Lots.Lot;
+
 
 namespace Domain.Users
 {
@@ -79,15 +78,23 @@ namespace Domain.Users
 
         public void Deposit(long amount)
         {
-            if(amount > 0 && amount < 100_001)
+            if(amount > 0 && amount <= 100_000)
             {
                 Balance += amount;
                 SetUpdate();
             }
         }
 
+        public void Withdraw(long amount)
+        {
+            if(amount > 0 && amount <= Balance)
+            {
+                Balance -= amount;
+                SetUpdate();
+            }
+        }
 
-        public void CreateLot(
+        public Lot CreateLot(
             string name,
             string description,
             long startingPrice,
@@ -107,33 +114,80 @@ namespace Domain.Users
             
             Lots.Add( newLot );
             SetUpdate();
+            return newLot;
         }
         public bool CheckBalanceBidOnLot(long amount)
         {
-            return this.Balance > amount;
+            return this.Balance >= amount;
         }
 
         public void PlaceBidOnLot(Lot lot, long amount)
         {
-            var winBidAmount = lot.Bids.LastOrDefault().Amount;
-            //long winningBidAmount = winBid.Amount;
-            if (!CheckBalanceBidOnLot(winBidAmount) 
-                && amount >= lot.MinBet 
-                && amount > winBidAmount)
+            var lastBid = lot.Bids.LastOrDefault();
+            var lastBidAmount = lastBid?.Amount ?? lot.StartingPrice;
+
+            if (!CheckBalanceBidOnLot(amount) || 
+                amount < lot.MinBet || 
+                amount <= lastBidAmount)
             {
                 throw new Exception("not money");
             }
+
+            Withdraw(amount);
             var bid = new Bid(Id, lot.Id, amount);
             lot.Bids.Add(bid);
             lot.ExtendTime();
             SetUpdate();
-
         }
         
+        public void ProcessLotCompletion(Lot lot)
+        {
+            if (lot.Status != LotStatus.Closed ||
+                !lot.Bids.Any())
+            {
+                return;
+            }
+
+            var winningBid = lot.Bids
+                .OrderByDescending(b => b.Amount).First();
+            
+            if (winningBid.UserId != Id)
+            {
+                var userBids = lot.Bids
+                    .Where(b => b.UserId == Id)
+                    .ToList();
+
+                foreach (var bid in userBids)
+                {
+                    Deposit(bid.Amount);
+                }
+            }
+            
+            if(winningBid.UserId == Id)
+            {
+                var userBids = lot.Bids
+                    .Where(b => b.UserId == Id)
+                    .ToList();
+
+                foreach (var bid in userBids)
+                {
+                    if (bid.Amount != winningBid.Amount)
+                    {
+                        Deposit(bid.Amount);
+                    }
+                }
+            }
+        }
+
         public void CloseLot(int id)
         {
             var thisLot = Lots.FirstOrDefault(k => k.Id == id);
-            thisLot?.CloseLot();
+            if (thisLot != null)
+            {
+                thisLot?.CloseLot();
+                ProcessLotCompletion(thisLot);
+                
+            }
             SetUpdate();
         }
     }

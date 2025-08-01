@@ -1,12 +1,13 @@
-﻿using Domain.Common;
-using Domain.Bids;
+﻿using Domain.Bids;
+using Domain.Common;
 using Domain.Lots;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Users
 {
@@ -101,7 +102,7 @@ namespace Domain.Users
 
         public void PlaceBidOnLot(Lot lot, long amount)
         {
-            var winningBidAmount = lot.Bids.LastOrDefault().Amount;
+            var winningBidAmount = lot.Bids.LastOrDefault().Amount; // The amount of winning bet
             if (!CheckBalance(winningBidAmount) 
                 && amount >= lot.MinBet 
                 && amount > winningBidAmount)
@@ -119,17 +120,25 @@ namespace Domain.Users
             string? email, 
             string? password)
         {
-            if(string.IsNullOrWhiteSpace(nickName) && nickName?.Length >= 4)
+            if(string.IsNullOrWhiteSpace(nickName) || nickName?.Length < 4 || nickName?.Length > 20 )
             {
                 throw new Exception("Invalid data in user nickname");
             }
-            if (string.IsNullOrWhiteSpace(email) && )
+            if (nickName.Any(c => !char.IsLetterOrDigit(c) && c != '_'))
+            {
+                throw new ArgumentException("Nickname can only contain letters, digits, and underscores.", nameof(nickName));
+            }
+            if (string.IsNullOrWhiteSpace(email) || !Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
             {
                 throw new Exception("Invalid data in user email");
             }
             if (string.IsNullOrWhiteSpace(password))
             {
                 throw new Exception("Invalid password");
+            }
+            if (!password.Any(char.IsUpper) || !password.Any(char.IsLower) || !password.Any(char.IsDigit))
+            {
+                throw new ArgumentException("Password must contain at least one uppercase letter, one lowercase letter, and one digit.", nameof(password));
             }
         }
 

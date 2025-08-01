@@ -65,9 +65,14 @@ namespace Domain.Lots
         public enum LotStatus
         {
             Active,
-            Closed
+            Closed,
+            ClosedByUser
         }
 
+        public void ReturnBids()
+        {
+            
+        }
         
     }
 }

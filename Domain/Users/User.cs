@@ -67,9 +67,14 @@ namespace Domain.Users
             }
         }
 
+        public void Withdraw(long amount)
+        {
+            if(amount > 0 && amount <= Balance)
+            Balance -= amount;
+            SetUpdate();
+        }
 
-
-        public void CreateLot(string name,
+        public Lot CreateLot(string name,
             string description,
             long startingPrice,
             long minBet,
@@ -86,6 +91,7 @@ namespace Domain.Users
 
             Lots.Add(newLot);
             SetUpdate();
+            return newLot;
         }
 
         public void CloseLot(int id)
@@ -102,17 +108,53 @@ namespace Domain.Users
 
         public void PlaceBidOnLot(Lot lot, long amount)
         {
+            if (lot.Status != Lot.LotStatus.Active)
+            {
+                return;
+            }
             var winningBidAmount = lot.Bids.LastOrDefault().Amount; // The amount of winning bet
-            if (!CheckBalance(winningBidAmount) 
-                && amount >= lot.MinBet 
-                && amount > winningBidAmount)
+            if (!CheckBalance(winningBidAmount)
+                || !(amount >= lot.MinBet)
+                || !(amount > winningBidAmount))
             {
                 throw new Exception("Not enough money for making a bid!");
             }
+            Withdraw(amount);
             var bid = new Bid(Id, lot.Id, amount);
             lot.Bids.Add(bid);
             lot.ExtendTime();
             SetUpdate();
+        }
+
+        public void ProcessLotCompletion(Lot lot)
+        {
+            if (lot.Status != Lot.LotStatus.Closed || !lot.Bids.Any())
+            {
+                return;
+            }
+            var winningBid = lot.Bids
+                .OrderByDescending(b => b.Amount).First();
+            if (winningBid.UserId != Id)
+            {
+                var userBids = lot.Bids
+                    .Where(b => b.UserId == Id).ToList();
+                foreach(var bid in userBids)
+                {
+                    Deposit(bid.Amount);
+                }
+            }
+            else
+            {
+                var userBids = lot.Bids
+                    .Where(b => b.UserId == Id).ToList();
+                foreach(var bid in userBids)
+                {
+                    if (bid.Amount != winningBid.Amount)
+                    {
+                        Deposit(bid.Amount);
+                    }
+                }
+            }
         }
 
         private void ValidateData(

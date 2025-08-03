@@ -1,0 +1,33 @@
+.header{
+    display: flex;
+    align-items: center;
+    justify-content:space-between;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.search{
+    border-bottom: 2px solid #000;
+    outline: none;
+}
+.searchLine{
+    border: none;
+    outline: none;
+    width: 180px;
+    font-size: 24px;
+}
+.logoWithMenu{
+    position: absolute;
+    left: 50%;
+}
+.logo{
+    color: #F36815;
+    font-weight: 600;
+}
+.login{
+    height: 40px;
+    width: 110px;
+    border-radius: 10px;
+    background-color: #000;
+    color: #fff;
+    font-weight: 600;
+}

@@ -56,6 +56,13 @@ namespace Domain.Lots
             }
         }
 
+        public void CloseLotByUser()
+        {
+            if (!IsActive)
+            {
+                Status = LotStatus.ClosedByUser;
+            }
+        }
 
         public void CloseLot()
         {
@@ -69,7 +76,9 @@ namespace Domain.Lots
         public enum LotStatus
         {
             Active,
-            Closed
+            Closed,
+            ClosedByUser
+
         }
     }
 }

@@ -9,6 +9,8 @@ namespace Tests.UnitUsers
 {
     public class UserTests
     {
+        public UserService UserdService;
+
         private TimeSpan timeLifeLot = new TimeSpan(0, 30, 0);
         private User user1 = new User("User1", "sdfsdfs@sdfsd", "dsfsfsfk");
         private User user2 = new User("User2", "sdfsdfs@sdfsd", "dsfsfsfk");

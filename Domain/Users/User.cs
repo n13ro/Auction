@@ -47,148 +47,63 @@ namespace Domain.Users
                 throw new Exception("Invalid data in password");
             }
         }
+
         public void UpdateNickName(string newNick)
         {
-            if(newNick != NickName && 
-                newNick.Length >= 4
-                )
-            {
-                NickName = newNick;
-                SetUpdate();
-            }
+            NickName = newNick;
+            SetUpdate();
         }
 
         public void UpdateEmail(string newEmail)
         {
-            if (newEmail.Contains('@'))
-            {
-                Email = newEmail;
-                SetUpdate();
-            }
+            Email = newEmail;
+            SetUpdate();
         }
 
         public void UpdatePassword(string newPassword)
         {
-            if (newPassword.Length >= 6)
-            {
-                Password = newPassword;
-                SetUpdate();
-            }
+            Password = newPassword;
+            SetUpdate();
         }
 
         public void Deposit(long amount)
         {
-            if(amount > 0 && amount <= 100_000)
-            {
-                Balance += amount;
-                SetUpdate();
-            }
+            Balance += amount;
+            SetUpdate();
+        }
+
+        public void ReturnMoney(long amount)
+        {
+            Balance += amount;
+            SetUpdate();
         }
 
         public void Withdraw(long amount)
         {
-            if(amount > 0 && amount <= Balance)
-            {
-                Balance -= amount;
-                SetUpdate();
-            }
+            Balance -= amount;
+            SetUpdate();
         }
 
-        public Lot CreateLot(
-            string name,
-            string description,
-            long startingPrice,
-            long minBet,
-            bool isExtraTime,
-            TimeSpan lotLife
-            )
-        {
-            Lot newLot = new Lot(
-                name,
-                description,
-                startingPrice,
-                minBet,
-                isExtraTime,
-                TimeSpan.FromMinutes(lotLife.Minutes)
-                );
-            
-            Lots.Add( newLot );
-            SetUpdate();
-            return newLot;
-        }
         public bool CheckBalanceBidOnLot(long amount)
         {
-            return this.Balance >= amount;
+            return Balance >= amount;
         }
 
-        public void PlaceBidOnLot(Lot lot, long amount)
+        public void AddLot(Lot lot)
         {
-            var lastBid = lot.Bids.LastOrDefault();
-            var lastBidAmount = lastBid?.Amount ?? lot.StartingPrice;
-
-            if (!CheckBalanceBidOnLot(amount) || 
-                amount < lot.MinBet || 
-                amount <= lastBidAmount)
-            {
-                throw new Exception("not money");
-            }
-
-            Withdraw(amount);
-            var bid = new Bid(Id, lot.Id, amount);
-            lot.Bids.Add(bid);
-            lot.ExtendTime();
+            _lots.Add(lot);
             SetUpdate();
         }
-        
-        public void ProcessLotCompletion(Lot lot)
+
+        public Lot? GetLot(int lotId)
         {
-            if (lot.Status != LotStatus.Closed ||
-                !lot.Bids.Any())
-            {
-                return;
-            }
-
-            var winningBid = lot.Bids
-                .OrderByDescending(b => b.Amount).First();
-            
-            if (winningBid.UserId != Id)
-            {
-                var userBids = lot.Bids
-                    .Where(b => b.UserId == Id)
-                    .ToList();
-
-                foreach (var bid in userBids)
-                {
-                    Deposit(bid.Amount);
-                }
-            }
-            
-            if(winningBid.UserId == Id)
-            {
-                var userBids = lot.Bids
-                    .Where(b => b.UserId == Id)
-                    .ToList();
-
-                foreach (var bid in userBids)
-                {
-                    if (bid.Amount != winningBid.Amount)
-                    {
-                        Deposit(bid.Amount);
-                    }
-                }
-            }
+            return _lots.FirstOrDefault(l => l.Id == lotId);
         }
 
-        public void CloseLot(int id)
+        public void UpdateToLastModified()
         {
-            var thisLot = Lots.FirstOrDefault(k => k.Id == id);
-            if (thisLot != null)
-            {
-                thisLot?.CloseLot();
-                ProcessLotCompletion(thisLot);
-                
-            }
             SetUpdate();
         }
+
     }
 }

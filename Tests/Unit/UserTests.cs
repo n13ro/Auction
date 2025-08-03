@@ -9,9 +9,9 @@ namespace Tests.Unit
         private readonly UserService _userService;
         private readonly TimeSpan timeLifeLot = new TimeSpan(0, 30, 0);
 
-        public UserTests(UserService userdService)
+        public UserTests(UserService userService)
         {
-            _userService = userdService;
+            _userService = userService;
         }
 
         [Fact]

@@ -1,5 +1,5 @@
 ﻿using Domain.Bids;
-using Domain.Common;
+using Domain.Core;
 using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Lots
@@ -21,14 +21,8 @@ namespace Domain.Lots
 
         private Lot() { }
 
-        public Lot(
-            string name, 
-            string description, 
-            long startingPrice, 
-            long minBet,
-            bool isExtraTime,
-            TimeSpan lotLife  
-            )
+        public Lot(string name, string description, long startingPrice, 
+            long minBet,bool isExtraTime,TimeSpan lotLife)
         {
             Name = name;
             Description = description;
@@ -58,19 +52,26 @@ namespace Domain.Lots
 
         public void CloseLotByUser()
         {
-            if (!IsActive)
+            if (IsActive)
             {
                 Status = LotStatus.ClosedByUser;
+                SetUpdate();
             }
         }
 
         public void CloseLot()
         {
-            if (!IsActive)
+            if (IsActive)
             {
                 Status = LotStatus.Closed;
+                SetUpdate();
             }
 
+        }
+
+        internal void AddBid(Bid bid)
+        {
+            _bids.Add( bid );
         }
 
         public enum LotStatus

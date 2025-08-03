@@ -1,11 +1,7 @@
 ﻿using Domain.Bids;
-using Domain.Common;
 using Domain.Lots;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using static Domain.Lots.Lot;
 
@@ -44,57 +40,63 @@ namespace Domain.Users
             }
         }
 
-        public void UpdateNickName(User user, string newNick)
+        public async Task UpdateNickName(User user, string newNick)
         {
             if (newNick != user.NickName && newNick.Length >= 4)
             {
                 user.UpdateNickName(newNick);
                 _logger.LogInformation("Updated nickname for user {UserId} to {NewNick}", user.Id, newNick);
+                await Task.CompletedTask;
             }
         }
 
-        public void UpdateEmail(User user, string newEmail)
+        public async Task UpdateEmail(User user, string newEmail)
         {
             if (newEmail.Contains('@'))
             {
                 user.UpdateEmail(newEmail);
                 _logger.LogInformation("Updated email for user {UserId} to {NewEmail}", user.Id, newEmail);
+                await Task.CompletedTask;
             }
         }
 
-        public void UpdatePassword(User user, string newPassword)
+        public async Task UpdatePassword(User user, string newPassword)
         {
             if (newPassword.Length >= 6)
             {
                 user.UpdatePassword(newPassword);
                 _logger.LogInformation("Updated password for user {UserId}", user.Id);
+                await Task.CompletedTask;
             }
         }
 
-        public void Deposit(User user, long amount)
+        public async Task Deposit(User user, long amount)
         {
             if (amount > 0 && amount <= 100_000)
             {
                 user.Deposit(amount);
                 _logger.LogInformation("Deposited {Amount} for user {UserId}", amount, user.Id);
+                await Task.CompletedTask;
             }
         }
 
-        public void ReturnMoney(User user, long amount)
+        public async Task ReturnMoney(User user, long amount)
         {
             if (amount > 0)
             {
                 user.ReturnMoney(amount);
                 _logger.LogInformation("Returned {Amount} to user {UserId}", amount, user.Id);
+                await Task.CompletedTask;
             }
         }
 
-        public void Withdraw(User user, long amount)
+        public async Task Withdraw(User user, long amount)
         {
             if (amount > 0 && amount <= user.Balance)
             {
                 user.Withdraw(amount);
                 _logger.LogInformation("Withdrew {Amount} from user {UserId}", amount, user.Id);
+                await Task.CompletedTask;
             }
         }
 
@@ -121,7 +123,7 @@ namespace Domain.Users
             return newLot;
         }
 
-        public void PlaceBidOnLot(User user, Lot lot, long amount)
+        public async Task PlaceBidOnLot(User user, Lot lot, long amount)
         {
             var lastBid = lot.Bids.LastOrDefault();
             var lastBidAmount = lastBid?.Amount ?? lot.StartingPrice;
@@ -139,18 +141,20 @@ namespace Domain.Users
             lot.ExtendTime();
             user.UpdateToLastModified();
             _logger.LogInformation("User {UserId} placed bid {Amount} on lot {LotId}", user.Id, amount, lot.Id);
+            await Task.CompletedTask;
         }
 
-        public void ReturnBidsToUser(User user, Lot lot)
+        public async Task ReturnBidsToUser(User user, Lot lot)
         {
             var userBids = CallUserBids(user, lot);
 
             foreach (var bid in userBids)
             {
-                ReturnMoney(user, bid.Amount);
+                await ReturnMoney(user, bid.Amount);
             }
             _logger.LogInformation("Returned {BidCount} bids to user {UserId} for lot {LotId}",
                 userBids.Count(), user.Id, lot.Id);
+            await Task.CompletedTask;
         }
 
         public IEnumerable<Bid> CallUserBids(User user, Lot lot)
@@ -160,11 +164,11 @@ namespace Domain.Users
                     .ToList();
         }
 
-        public void ProcessLotCompletion(User user, Lot lot)
+        public async Task ProcessLotCompletion(User user, Lot lot)
         {
             if (lot.Status == LotStatus.ClosedByUser)
             {
-                ReturnBidsToUser(user, lot);
+                await ReturnBidsToUser(user, lot);
             }
 
             if (lot.Status != LotStatus.Closed || !lot.Bids.Any())
@@ -177,7 +181,7 @@ namespace Domain.Users
 
             if (winningBid.UserId != user.Id)
             {
-                ReturnBidsToUser(user, lot);
+                await ReturnBidsToUser(user, lot);
             }
 
             if (winningBid.UserId == user.Id)
@@ -188,23 +192,25 @@ namespace Domain.Users
                 {
                     if (bid.Amount != winningBid.Amount)
                     {
-                        ReturnMoney(user, bid.Amount);
+                        await ReturnMoney(user, bid.Amount);
                     }
                 }
             }
             _logger.LogInformation("Processed lot completion for user {UserId} and lot {LotId}", user.Id, lot.Id);
+            await Task.CompletedTask;
         }
 
-        public void CloseLot(User user, int lotId)
+        public async Task CloseLot(User user, int lotId)
         {
             var thisLot = user.Lots.FirstOrDefault(k => k.Id == lotId);
             if (thisLot != null)
             {
                 thisLot?.CloseLot();
-                ProcessLotCompletion(user, thisLot);
+                await ProcessLotCompletion(user, thisLot);
             }
             user.UpdateToLastModified();
             _logger.LogInformation("User {UserId} closed lot {LotId}", user.Id, lotId);
+            await Task.CompletedTask;
         }
     }
 }

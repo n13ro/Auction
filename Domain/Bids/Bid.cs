@@ -1,4 +1,4 @@
-﻿using Domain.Common;
+﻿using Domain.Core;
 using Domain.Lots;
 using Domain.Users;
 using System;
@@ -27,8 +27,27 @@ namespace Domain.Bids
             SetUpdate();
         }
 
+        public void MarkAsWinning()
+        {
+            Status = BidStatus.Winning;
+            SetUpdate();
+        }
+
+        public void MarkAsLosing()
+        {
+            Status = BidStatus.Losing;
+            SetUpdate();
+        }
+        public void Cancel()
+        {
+            Status = BidStatus.Cancelled;
+            SetUpdate();
+        }
+
+
         public enum BidStatus
         {
+            Active,
             Cancelled,
             Winning,
             Losing

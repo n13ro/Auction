@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 
-namespace Domain.Common
+namespace Domain.Core
 {
     public abstract class BaseEntity
     {
@@ -13,6 +13,7 @@ namespace Domain.Common
         protected BaseEntity()
         {
             CreateAt = DateTime.Now;
+            UpdateAt = DateTime.Now;
         }
 
         protected void SetUpdate()

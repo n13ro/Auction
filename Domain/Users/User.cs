@@ -1,5 +1,5 @@
 ﻿using Domain.Bids;
-using Domain.Common;
+using Domain.Core;
 using Domain.Lots;
 using Microsoft.Extensions.Logging;
 using System.ComponentModel.DataAnnotations;
@@ -25,27 +25,11 @@ namespace Domain.Users
 
         public User(string nickName, string email, string password)
         {
-            ValidateData(nickName, email, password);
             NickName = nickName;
             Email = email;
             Password = password;
             Balance = 0;
             SetUpdate();
-        }
-        private void ValidateData(string? nickName, string? email, string? password)
-        {
-            if (string.IsNullOrWhiteSpace(nickName) && string.IsNullOrEmpty(nickName))
-            {
-                throw new Exception("Invalid data in nickName");
-            }
-            if (string.IsNullOrWhiteSpace(email) && email.Contains('@'))
-            {
-                throw new Exception("Invalid data in email");
-            }
-            if (string.IsNullOrWhiteSpace(password))
-            {
-                throw new Exception("Invalid data in password");
-            }
         }
 
         public void UpdateNickName(string newNick)

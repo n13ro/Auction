@@ -1,3 +1,122 @@
 .lot-map{
     display: flex;
+    align-items: center;
 }
+
+.black .card {
+    width: 200px;
+    height: 320px;
+    background-color: #000;
+    border-radius: 10px;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    color: #fff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    margin-right: 30px; //for beta
+}
+
+.yellow .card {
+    width: 200px;
+    height: 320px;
+    background-color: #F36815;
+    border-radius: 10px;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    color: #fff;
+    box-shadow: 0 4px 8px #F36815;
+    display: flex;
+    flex-direction: column;
+    margin-right: 30px; //for beta
+}
+
+
+.card-header {
+    position: relative;
+}
+
+.card-header img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    user-select: none;
+}
+
+.black .timer {
+    height: 30px;
+    width: 80px;
+    display: flex;
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0);
+    border-bottom-right-radius: 8px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.yellow .timer {
+    height: 30px;
+    width: 80px;
+    display: flex;
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    background-color: #F36815;
+    border-bottom-right-radius: 8px;
+    font-size: 12px;
+    font-weight: bold;
+    }
+.black .timer-info{
+    color: #F36815;
+}
+.yellow .timer-info{
+    color: #000;
+}
+.card-content {
+    padding-left: 24px;
+    display: flex;
+    flex-direction: column;
+}
+
+.name {
+    margin-top: 30px;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.black .price {
+    margin-top: 0px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #F36815; 
+}
+
+.yellow .price {
+    margin-top: 0px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #000; 
+}
+
+.review {
+    background-color: #fff;
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    font-size: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 80%;
+    height: 30px;
+    transition: background-color 0.3s;
+}
+
+.review:hover {
+    background-color: #f0f0f0;
+}
+

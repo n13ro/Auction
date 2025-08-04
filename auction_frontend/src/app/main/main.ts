@@ -11,5 +11,5 @@ import { PriceLot } from '../price-lot/price-lot';
   styleUrl: './main.scss'
 })
 export class Main {
-
+  
 }

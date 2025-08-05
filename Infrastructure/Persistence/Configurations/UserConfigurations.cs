@@ -11,14 +11,14 @@ namespace Infrastructure.Persistence.Configurations
         {
             builder.HasKey(x => x.Id);
 
-            builder.Property(k => k.NickName)
-                .IsRequired()
-                .HasMaxLength(20);
+            builder.HasMany(k => k.Lots)
+                .WithMany()
+                .UsingEntity(j => j.ToTable("LotsUsers"));
 
-            //users -> lots
-            builder.HasMany(u => u.Lots)
-                .WithOne()
-                .HasForeignKey("UserId");
+            builder.HasMany(u => u.Bids)
+                .WithMany()
+                .UsingEntity(j => j.ToTable("BidsUsers"));
+
         }
     }
 }

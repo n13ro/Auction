@@ -18,8 +18,11 @@ namespace Domain.Users
         public string Password { get; private set; }
         public long Balance { get; private set; }
 
-        private List<Lot> _lots = new();
+        private readonly List<Lot> _lots = new();
+        private readonly List<Bid> _bids = new();
         public ICollection<Lot> Lots => _lots;
+        public ICollection<Bid> Bids => _bids;
+
 
         private User() { }
 

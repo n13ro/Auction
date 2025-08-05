@@ -14,13 +14,10 @@ namespace Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Lot> builder)
         {
-            builder.HasOne<User>()
-                .WithMany(u => u.Lots)
-                .HasForeignKey("UserId");
 
-            builder.HasMany(u => u.Bids)
-                .WithOne()
-                .HasForeignKey(b => b.LotId);
+            builder.HasMany(k => k.Bids)
+                .WithMany()
+                .UsingEntity(j => j.ToTable("BidsLots"));
         }
     }
 }

@@ -16,7 +16,7 @@ namespace Domain.Lots
         public bool IsExtraTime { get; private set; }
         public LotStatus Status { get; private set; } = LotStatus.Active;
 
-        private List<Bid> _bids = new();
+        private readonly List<Bid> _bids = new();
         public ICollection<Bid> Bids => _bids;
 
         private Lot() { }

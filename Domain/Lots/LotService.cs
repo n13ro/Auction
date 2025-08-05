@@ -11,31 +11,69 @@ namespace Domain.Lots
     {
         public Task AddBidAsync(Lot lot, Bid bid)
         {
-            throw new NotImplementedException();
+            if (!lot.IsActive)
+            {
+                throw new Exception("Lot is NOT active");
+            }
+
+            var winBid = GetWinningBid(lot);
+            if (winBid.Amount >= bid.Amount)
+            {
+                throw new Exception("This bid > Last bid");
+            }
+
+            lot.AddBid(bid);
+
+            return Task.CompletedTask;
         }
 
         public Task CloseLotAsync(Lot lot)
         {
-            throw new NotImplementedException();
+            if (!lot.IsActive)
+            {
+                lot.CloseLot();
+            }
+            return Task.CompletedTask;
         }
 
         public Task CloseLotByUserAsync(Lot lot)
         {
-            throw new NotImplementedException();
+            if (!lot.IsActive)
+            {
+                throw new Exception("This lot not active");
+            }
+            lot.CloseLotByUser();
+            return Task.CompletedTask;
         }
 
-        public Task<Lot> CreateLotAsync(string name, string description, long startingPrice, long minBet, bool isExtraTime, TimeSpan lotLife)
+        public Task<Lot> CreateLotAsync(string name, string description, 
+            long startingPrice, long minBet, 
+            bool isExtraTime, TimeSpan lotLife)
         {
-            throw new NotImplementedException();
+            var newLot = new Lot(
+                name, description, 
+                startingPrice, minBet, 
+                isExtraTime, lotLife);
+
+            return Task.FromResult(newLot);
         }
 
         public Task ExtendTimeAsync(Lot lot)
         {
-            throw new NotImplementedException();
+            if (lot.IsActive && lot.IsExtraTime)
+            {
+                lot.ExtendTime();
+            }
+            else
+            {
+                throw new Exception("Is IsExtraTime = false");
+            }
+            return Task.CompletedTask;
         }
 
         public Task<IEnumerable<Lot>> GetActiveLotsAsync()
         {
+
             throw new NotImplementedException();
         }
 
@@ -54,14 +92,22 @@ namespace Domain.Lots
             throw new NotImplementedException();
         }
 
-        public Task<Bid?> GetWinningBidAsync(Lot lot)
+        public Bid GetWinningBid(Lot lot)
         {
-            throw new NotImplementedException();
+            var winBid = lot.Bids.OrderByDescending(b => b.Id)
+                .FirstOrDefault();
+
+            if (winBid == null)
+            {
+                throw new Exception("Winning bid this null");
+            }
+
+            return winBid;
         }
 
         public Task<bool> IsActiveAsync(Lot lot)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(lot.IsActive);
         }
     }
 }

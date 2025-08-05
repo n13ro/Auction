@@ -10,7 +10,8 @@ namespace Domain.Bids
     {
         public Task CancelBidAsync(Bid bid)
         {
-            throw new NotImplementedException();
+            bid.Cancel();
+            return Task.CompletedTask;
         }
 
         public Task<bool> CanUserPlaceBidAsync(int userId, int lotId, long amount)
@@ -20,7 +21,8 @@ namespace Domain.Bids
 
         public Task<Bid> CreateBidAsync(int userId, int lotId, long amount)
         {
-            throw new NotImplementedException();
+            var newBid = new Bid(userId, lotId, amount);
+            return Task.FromResult(newBid);
         }
 
         public Task<Bid?> GetByIdAsync(int id)

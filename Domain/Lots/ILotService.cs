@@ -11,6 +11,7 @@ namespace Domain.Lots
     {
         Task<Lot> CreateLotAsync(string name, string description, long startingPrice,
             long minBet, bool isExtraTime, TimeSpan lotLife);
+
         Task CloseLotAsync(Lot lot);
         Task CloseLotByUserAsync(Lot lot);
         Task ExtendTimeAsync(Lot lot);
@@ -21,7 +22,7 @@ namespace Domain.Lots
         // Управление ставками
         Task AddBidAsync(Lot lot, Bid bid);
         Task<IEnumerable<Bid>> GetBidsAsync(Lot lot);
-        Task<Bid?> GetWinningBidAsync(Lot lot);
+        Bid GetWinningBid(Lot lot);
 
         // Получение лотов
         Task<Lot?> GetByIdAsync(int id);

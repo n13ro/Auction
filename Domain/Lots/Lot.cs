@@ -61,7 +61,7 @@ namespace Domain.Lots
 
         public void CloseLot()
         {
-            if (IsActive)
+            if (!IsActive)
             {
                 Status = LotStatus.Closed;
                 SetUpdate();
@@ -74,7 +74,7 @@ namespace Domain.Lots
             _bids.Add( bid );
         }
 
-        public enum LotStatus
+        public enum LotStatus : byte
         {
             Active,
             Closed,

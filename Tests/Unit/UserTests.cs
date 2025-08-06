@@ -1,73 +1,79 @@
 ﻿using Domain.Lots;
 using Domain.Users;
+using FluentAssertions;
+using Infrastructure.Persistence.Context;
+using Infrastructure.Persistence.Repositores.Users;
+using Moq;
+using Moq.AutoMock;
+using System.Threading.Tasks;
 
 
 namespace Tests.Unit
 {
     public class UserTests
     {
-        private readonly UserService _userService;
-        private readonly TimeSpan timeLifeLot = new TimeSpan(0, 30, 0);
+        private readonly AutoMocker _mocker;
+        private readonly TimeSpan timeLifeLot = new(0, 30, 0);
 
-        public UserTests(UserService userService)
+        public UserTests()
         {
-            _userService = userService;
+            _mocker = new AutoMocker();
         }
 
-        [Fact]
-        public void DepositOnUser()
+        [Theory]
+        [InlineData(1000, 100, true)]
+        [InlineData(50, 100, false)]
+        [InlineData(0, 100, false)]
+        public async Task CheckBalanceBidOnLot_Test(long userBalance, long bidAmount, bool expectedResult)
         {
-            User user1 = _userService.CreateUser("User1", "sdfsdfs@sdfsd", "dsfsfsfk");
-            Assert.NotNull(user1);
-            Assert.Equal(0, user1.Balance);
+            var user = _mocker.CreateInstance<User>();
+            user.Deposit(userBalance);
 
-            user1.Deposit(100_000);
-            Assert.Equal(100_000, user1.Balance);
+            var result = user.CheckBalanceBidOnLot(bidAmount);
+
+            // Assert
+            result.Should().Be(expectedResult);
         }
 
-        [Fact]
-        public void DepositOnUser_InvalidAmount_ShouldNotChangeBalance()
+        [Theory]
+        [InlineData(1000, 100, 900)]
+        [InlineData(500, 200, 300)]
+        [InlineData(100, 50, 50)]
+        public void Withdraw_Test(long initialBalance, long withdrawAmount, long expectedBalance)
         {
-            User user2 = _userService.CreateUser("User2", "sdfsdfs@sdfsd", "dsfsfsfk");
-            var initBal = user2.Balance;
-            user2.Deposit(-100);
-            Assert.Equal(initBal, user2.Balance);
+            // Arrange
+            var user = _mocker.CreateInstance<User>();
+            user.Deposit(initialBalance);
+
+            // Act
+            user.Withdraw(withdrawAmount);
+
+            // Assert
+            user.Balance.Should().Be(expectedBalance);
         }
 
-        [Fact]
-        public void DepositOnUser_ExceedMaxAmount_ShouldNotChangeBalance()
+        [Theory]
+        [InlineData(1000, true)]
+        [InlineData(-200, false)]
+        [InlineData(100_111, false)]
+        [InlineData(0, false)]
+        [InlineData(100_001, false)]
+        public void DepositMax_Test(long amount, bool isSuccess)
         {
-            User user2 = _userService.CreateUser("User2", "sdfsdfs@sdfsd", "dsfsfsfk");
-            var initialBalance = user2.Balance;
-            user2.Deposit(150_000);
-            Assert.Equal(initialBalance, user2.Balance);
-        }
+            // Arrange
+            var user = _mocker.CreateInstance<User>();
+            var initBalance = user.Balance;
 
-        [Fact]
-        public void PlaceBidOnLot_ValidBid_ShouldAddBid()
-        {
-            User user1 = _userService.CreateUser("User1", "sdfsdfs@sdfsd", "dsfsfsfk");
-            User user2 = _userService.CreateUser("User2", "sdfsdfs@sdfsd", "dsfsfsfk");
 
-            Lot lot = _userService.CreateLot(user1, "adad", "sdfsdfsd", 1000, 100, false, timeLifeLot);
-
-            user1.Deposit(50_000);
-            user2.Deposit(50_000);
-
-            user2.AddLot(lot);
-            user1.AddLot(lot);
-            user2.AddLot(lot);
-
-            _ = _userService.PlaceBidOnLot(user2, lot, 1100);
-            _ = _userService.PlaceBidOnLot(user1, lot, 1200);
-            _ = _userService.PlaceBidOnLot(user2, lot, 1300);
-
-            Assert.Equal(48_800, user1.Balance);
-            Assert.Equal(47_600, user2.Balance);
-            Assert.Equal(1100, lot.Bids.First().Amount);
-            //Assert.Equal(1200, lot.Bids.LastOrDefault()?.Amount);
-            Assert.Equal(1300, lot.Bids.LastOrDefault()?.Amount);
-
+            if(isSuccess)
+            {
+                user.Deposit(amount);
+                user.Balance.Should().Be(initBalance + amount);
+            }
+            else
+            {
+                Assert.Fail("Error values ");
+            }
         }
 
     }

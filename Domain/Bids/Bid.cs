@@ -10,8 +10,6 @@ namespace Domain.Bids
         public DateTime PlacedAt { get; private set; }
         public BidStatus Status { get; private set; }
 
-        public virtual ICollection<User> Users { get; set; } = new List<User>();
-        public virtual ICollection<Lot> Lots { get; set; } = new List<Lot>();
 
         private Bid() { }
         public Bid(long amount)

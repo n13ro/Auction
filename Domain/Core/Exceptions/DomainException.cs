@@ -6,7 +6,13 @@ using System.Threading.Tasks;
 
 namespace Domain.Core.Exceptions
 {
-    internal class DomainException
+    public abstract class DomainException : Exception
     {
+        protected DomainException(string msg) : base(msg) { }
+    }
+
+    public class ValidationException : DomainException
+    {
+        public ValidationException(string msg) : base(msg) { }
     }
 }

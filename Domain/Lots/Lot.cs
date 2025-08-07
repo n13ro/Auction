@@ -16,9 +16,9 @@ namespace Domain.Lots
         public bool IsExtraTime { get; private set; }
         public LotStatus Status { get; private set; } = LotStatus.Active;
 
-        private List<Bid> _bids = new();
+        private readonly List<Bid> _bids = new();
         public ICollection<Bid> Bids => _bids;
-        public int UserId { get; private set; }
+
         private Lot() { }
 
         public Lot(string name, string description, long startingPrice, 
@@ -61,7 +61,7 @@ namespace Domain.Lots
 
         public void CloseLot()
         {
-            if (IsActive)
+            if (!IsActive)
             {
                 Status = LotStatus.Closed;
                 SetUpdate();
@@ -74,7 +74,7 @@ namespace Domain.Lots
             _bids.Add( bid );
         }
 
-        public enum LotStatus
+        public enum LotStatus : byte
         {
             Active,
             Closed,

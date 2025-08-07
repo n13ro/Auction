@@ -12,13 +12,13 @@ namespace Domain.Core
 
         protected BaseEntity()
         {
-            CreateAt = DateTime.Now;
-            UpdateAt = DateTime.Now;
+            CreateAt = DateTime.UtcNow;
+            UpdateAt = DateTime.UtcNow;
         }
 
         protected void SetUpdate()
         {
-            UpdateAt = DateTime.Now;
+            UpdateAt = DateTime.UtcNow;
         }
 
     }

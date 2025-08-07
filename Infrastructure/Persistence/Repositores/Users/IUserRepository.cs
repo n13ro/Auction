@@ -9,6 +9,7 @@ namespace Infrastructure.Persistence.Repositores.Users
     {
 
         //Специф. операции
+        Task CreateUser(User user);
         Task PlaceBidAsync(User user, Lot lot, long amount);
         Task<bool> CanUserBidOnLotAsync(User user, Lot lot, long amount);
         Task WithdrawWonBidsAsync(User user, Lot lot);

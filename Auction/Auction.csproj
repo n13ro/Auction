@@ -19,4 +19,9 @@
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\BidsController\" />
+    <Folder Include="Controllers\LotsController\" />
+  </ItemGroup>
+
 </Project>

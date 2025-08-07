@@ -25,7 +25,18 @@ namespace Infrastructure.Persistence.Repositores.Users
             return user.Balance >= amount && lot.IsActive;
         }
 
-
+        public async Task CreateUser(User user)
+        {
+            if (user != null)
+            {
+                var newUser = new User(
+                    user.NickName,
+                    user.Email,
+                    user.Password);
+                await _ctx.Users.AddAsync(newUser);
+                await _ctx.SaveChangesAsync();
+            }
+        }
         public async Task PlaceBidAsync(User user, Lot lot, long amount)
         {
             if (!await CanUserBidOnLotAsync(user, lot, amount))

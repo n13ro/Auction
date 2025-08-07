@@ -1,12 +1,12 @@
 ﻿using Domain.Bids;
-using Domain.Common;
-using Domain.Users;
+using Domain.Core;
 using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Lots
 {
     public class Lot : BaseEntity
     {
+
         public string Name { get; private set; }
         public string Description { get; private set; }
         public long StartingPrice { get; private set; }
@@ -15,20 +15,14 @@ namespace Domain.Lots
         public DateTime EndTime { get; private set; }
         public bool IsExtraTime { get; private set; }
         public LotStatus Status { get; private set; } = LotStatus.Active;
-        //public int CurrentBids { get; private set; }
-        private List<Bid> _bids = new List<Bid>();
-        public ICollection<Bid> Bids => _bids;
 
+        private List<Bid> _bids = new();
+        public ICollection<Bid> Bids => _bids;
+        public int UserId { get; private set; }
         private Lot() { }
 
-        public Lot(
-            string name, 
-            string description, 
-            long startingPrice, 
-            long minBet,
-            bool isExtraTime,
-            TimeSpan lotLife  
-            )
+        public Lot(string name, string description, long startingPrice, 
+            long minBet,bool isExtraTime,TimeSpan lotLife)
         {
             Name = name;
             Description = description;
@@ -39,7 +33,7 @@ namespace Domain.Lots
             IsExtraTime = isExtraTime;
             SetUpdate();
         }
-        
+
         //time?
         public bool IsActive =>
             Status == LotStatus.Active &&
@@ -52,14 +46,32 @@ namespace Domain.Lots
             if (IsExtraTime)
             {
                 EndTime = EndTime.Add(TimeSpan.FromMinutes(2));
+                SetUpdate();
+            }
+        }
+
+        public void CloseLotByUser()
+        {
+            if (IsActive)
+            {
+                Status = LotStatus.ClosedByUser;
+                SetUpdate();
             }
         }
 
         public void CloseLot()
         {
-            if(!IsActive)
-            Status = LotStatus.Closed;
+            if (IsActive)
+            {
+                Status = LotStatus.Closed;
+                SetUpdate();
+            }
 
+        }
+
+        internal void AddBid(Bid bid)
+        {
+            _bids.Add( bid );
         }
 
         public enum LotStatus
@@ -67,12 +79,7 @@ namespace Domain.Lots
             Active,
             Closed,
             ClosedByUser
-        }
 
-        public void ReturnBids()
-        {
-            
         }
-        
     }
 }

@@ -1,5 +1,4 @@
 using Infrastructure;
-
 namespace Auction
 {
     public class Program

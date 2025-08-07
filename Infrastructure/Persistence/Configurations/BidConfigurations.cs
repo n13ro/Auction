@@ -1,4 +1,5 @@
 ﻿using Domain.Bids;
+using Domain.Lots;
 using Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -14,7 +15,11 @@ namespace Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Bid> builder)
         {
-            throw new NotImplementedException();
+            builder.HasOne<User>()
+                .WithMany()
+                .HasForeignKey(u => u.Id);
+
+            
         }
     }
 }

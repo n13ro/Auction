@@ -7,5 +7,11 @@ namespace Auction.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+
+        [HttpGet]
+        public string Get()
+        {
+            return "value1";
+        }
     }
 }

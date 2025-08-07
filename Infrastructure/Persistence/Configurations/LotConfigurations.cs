@@ -1,4 +1,5 @@
 ﻿using Domain.Lots;
+using Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -13,7 +14,10 @@ namespace Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Lot> builder)
         {
-            throw new NotImplementedException();
+
+            builder.HasMany(k => k.Bids)
+                .WithMany()
+                .UsingEntity(j => j.ToTable("BidsLots"));
         }
     }
 }

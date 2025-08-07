@@ -1,25 +1,27 @@
 ﻿using Domain.Bids;
-using Domain.Common;
+using Domain.Core;
 using Domain.Lots;
-using System;
-using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+
+using static Domain.Lots.Lot;
+
 
 namespace Domain.Users
 {
     public class User : BaseEntity
     {
-        [Range(4, 20, ErrorMessage = "Invalid nickname length")]
+        [Range(4, 20, ErrorMessage = "Invalid NickName length")]
         public string NickName { get; private set; }
+        [Range(4, 20, ErrorMessage = "Invalid Email length")]
         public string Email { get; private set; }
         public string Password { get; private set; }
         public long Balance { get; private set; }
-        private List<Lot> _lots = new List<Lot>();
+
+        private List<Lot> _lots = new();
         public ICollection<Lot> Lots => _lots;
+
+        public int LotId { get; private set; }
         private User() { }
 
         public User(string nickName, string email, string password)
@@ -33,155 +35,59 @@ namespace Domain.Users
 
         public void UpdateNickName(string newNick)
         {
-            if (newNick != NickName && newNick.Length >= 4)
-            {
-                NickName = newNick;
-                SetUpdate();
-            }
+            NickName = newNick;
+            SetUpdate();
         }
 
         public void UpdateEmail(string newEmail)
         {
-            if (newEmail.Contains('@'))
-            {
-                Email = newEmail;
-                SetUpdate();
-            }
+            Email = newEmail;
+            SetUpdate();
         }
 
         public void UpdatePassword(string newPassword)
         {
-            if (newPassword.Length >= 6)
-            {
-                Password = newPassword;
-                SetUpdate();
-            }
+            Password = newPassword;
+            SetUpdate();
         }
 
         public void Deposit(long amount)
         {
-            if (amount > 0 && amount < 100001)
-            {
-                Balance += amount;
-                SetUpdate();
-            }
+            Balance += amount;
+            SetUpdate();
+        }
+
+        public void ReturnMoney(long amount)
+        {
+            Balance += amount;
+            SetUpdate();
         }
 
         public void Withdraw(long amount)
         {
-            if(amount > 0 && amount <= Balance)
             Balance -= amount;
             SetUpdate();
         }
 
-        public Lot CreateLot(string name,
-            string description,
-            long startingPrice,
-            long minBet,
-            bool isExtraTime,
-            TimeSpan lotLife)
+        public bool CheckBalanceBidOnLot(long amount)
         {
-            Lot newLot = new Lot(
-                name, 
-                description, 
-                startingPrice, 
-                minBet, 
-                isExtraTime, 
-                TimeSpan.FromMinutes(lotLife.Minutes));
-
-            Lots.Add(newLot);
-            SetUpdate();
-            return newLot;
+            return Balance >= amount;
         }
 
-        public void CloseLot(int id)
+        public void AddLot(Lot lot)
         {
-            var thisLot = Lots.Where(k => k.Id == id && k.IsActive).FirstOrDefault();
-            thisLot?.CloseLot();
+            _lots.Add(lot);
             SetUpdate();
         }
 
-        public bool CheckBalance(long amount)
+        public Lot? GetLot(int lotId)
         {
-            return this.Balance > amount;
+            return _lots.FirstOrDefault(l => l.Id == lotId);
         }
 
-        public void PlaceBidOnLot(Lot lot, long amount)
+        public void UpdateToLastModified()
         {
-            if (lot.Status != Lot.LotStatus.Active)
-            {
-                return;
-            }
-            var winningBidAmount = lot.Bids.LastOrDefault().Amount; // The amount of winning bet
-            if (!CheckBalance(winningBidAmount)
-                || !(amount >= lot.MinBet)
-                || !(amount > winningBidAmount))
-            {
-                throw new Exception("Not enough money for making a bid!");
-            }
-            Withdraw(amount);
-            var bid = new Bid(Id, lot.Id, amount);
-            lot.Bids.Add(bid);
-            lot.ExtendTime();
             SetUpdate();
-        }
-
-        public void ProcessLotCompletion(Lot lot)
-        {
-            if (lot.Status != Lot.LotStatus.Closed || !lot.Bids.Any())
-            {
-                return;
-            }
-            var winningBid = lot.Bids
-                .OrderByDescending(b => b.Amount).First();
-            if (winningBid.UserId != Id)
-            {
-                var userBids = lot.Bids
-                    .Where(b => b.UserId == Id).ToList();
-                foreach(var bid in userBids)
-                {
-                    Deposit(bid.Amount);
-                }
-            }
-            else
-            {
-                var userBids = lot.Bids
-                    .Where(b => b.UserId == Id).ToList();
-                foreach(var bid in userBids)
-                {
-                    if (bid.Amount != winningBid.Amount)
-                    {
-                        Deposit(bid.Amount);
-                    }
-                }
-            }
-        }
-
-        private void ValidateData(
-            string? nickName, 
-            string? email, 
-            string? password)
-        {
-            if(string.IsNullOrWhiteSpace(nickName) || nickName?.Length < 4 || nickName?.Length > 20 )
-            {
-                throw new Exception("Invalid data in user nickname");
-            }
-            if (nickName.Any(c => !char.IsLetterOrDigit(c) && c != '_'))
-            {
-                throw new ArgumentException("Nickname can only contain letters, digits, and underscores.", nameof(nickName));
-            }
-            if (string.IsNullOrWhiteSpace(email) || !Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
-            {
-                throw new Exception("Invalid data in user email");
-            }
-            if (string.IsNullOrWhiteSpace(password))
-            {
-                throw new Exception("Invalid password");
-            }
-            if (!password.Any(char.IsUpper) || !password.Any(char.IsLower) || !password.Any(char.IsDigit))
-            {
-                throw new ArgumentException("Password must contain at least one uppercase letter, one lowercase letter, and one digit.", nameof(password));
-            }
         }
 
     }

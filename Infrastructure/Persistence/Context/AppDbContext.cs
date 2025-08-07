@@ -12,8 +12,10 @@ namespace Infrastructure.Persistence.Context
 {
     public class AppDbContext : DbContext
     {
-        public DbSet<Lot> Lots { get; set; }
+        public AppDbContext(DbContextOptions<AppDbContext> opt) : base(opt) { }
+
         public DbSet<User> Users { get; set; }
+        public DbSet<Lot> Lots { get; set; }
         public DbSet<Bid> Bids { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

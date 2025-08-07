@@ -16,6 +16,9 @@ namespace Application
             services.AddMediatR(cfg => cfg
             .RegisterServicesFromAssemblyContaining<CreateUserCommandHandler>());
 
+            services.AddMediatR(cfg => cfg
+            .RegisterServicesFromAssemblyContaining<UpdateUserDataCommandHandler>());
+
            // services.AddMediatR(cfg => cfg
            //.RegisterServicesFromAssemblyContaining<>());
 

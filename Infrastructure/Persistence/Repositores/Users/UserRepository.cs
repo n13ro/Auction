@@ -2,6 +2,8 @@
 using Domain.Lots;
 using Domain.Users;
 using Infrastructure.Persistence.Context;
+using Infrastructure.Persistence.Repositores.Users.DTOs;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +27,7 @@ namespace Infrastructure.Persistence.Repositores.Users
             return user.Balance >= amount && lot.IsActive;
         }
 
-        public async Task CreateUser(User user)
+        public async Task CreateUserAsync(User user)
         {
             if (user != null)
             {
@@ -37,6 +39,37 @@ namespace Infrastructure.Persistence.Repositores.Users
                 await _ctx.SaveChangesAsync();
             }
         }
+
+        public async Task UpdateUserDataAsync(UpdateUserDataRequest request)
+        {
+            var byUser = await _ctx.Users.FindAsync(request.Id);
+
+            await _ctx.Users
+                .Where(u => u.Id == request.Id)
+                .ExecuteUpdateAsync(user => user
+                    .SetProperty(u => u.NickName, request.NickName)
+                    .SetProperty(u => u.Email, request.Email)
+                    .SetProperty(u => u.Password, request.Password)
+                    .SetProperty(u => u.UpdateAt, DateTime.UtcNow)
+                );
+            await _ctx.SaveChangesAsync();
+
+        }
+
+        public async Task<UserResponse> GetByIdUserAsync(int id)
+        {
+            var byUser = await _ctx.Users.FindAsync(id);
+
+            return new UserResponse
+            {
+                Id = id,
+                NickName = byUser.NickName,
+                Email = byUser.Email,
+                Password = byUser.Password,
+                Balance = byUser.Balance
+            };
+        }
+
         public async Task PlaceBidAsync(User user, Lot lot, long amount)
         {
             if (!await CanUserBidOnLotAsync(user, lot, amount))

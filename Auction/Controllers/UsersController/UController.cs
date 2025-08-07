@@ -21,5 +21,13 @@ namespace Auction.Controllers.UsersController
         {
             await _mediator.Send(cmd);
         }
+
+        [HttpPut("{userId}")]
+        public async Task UpdateUserData(int userId, 
+            UpdateUserDataCommand cmd )
+        {
+            cmd.Id = userId;
+            await _mediator.Send(cmd);
+        }
     }
 }

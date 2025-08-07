@@ -28,7 +28,7 @@ namespace Application.Services.UserService.Command
 
             if (request != null)
             {
-                await _userRepository.CreateUser(newUser);
+                await _userRepository.CreateUserAsync(newUser);
 
             }
 

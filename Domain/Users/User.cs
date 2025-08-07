@@ -1,10 +1,7 @@
 ﻿using Domain.Bids;
 using Domain.Core;
 using Domain.Lots;
-using Microsoft.Extensions.Logging;
 using System.ComponentModel.DataAnnotations;
-
-using static Domain.Lots.Lot;
 
 
 namespace Domain.Users

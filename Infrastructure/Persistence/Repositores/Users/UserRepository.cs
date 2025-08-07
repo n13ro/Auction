@@ -20,6 +20,20 @@ namespace Infrastructure.Persistence.Repositores.Users
             _ctx = ctx;
         }
 
+        public async Task CreateUser(User user)
+        {
+            if (user != null)
+            {
+                var newUser = new User(
+                    user.NickName,
+                    user.Email,
+                    user.Password);
+                await _ctx.Users.AddAsync(newUser);
+                await _ctx.SaveChangesAsync();
+            }
+        }
+
+
         public async Task<bool> CanUserBidOnLotAsync(User user, Lot lot, long amount)
         {
             return user.Balance >= amount && lot.IsActive;

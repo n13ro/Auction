@@ -1,8 +1,6 @@
 ﻿using Domain.Lots;
 using Domain.Users;
 using FluentAssertions;
-using Infrastructure.Persistence.Context;
-using Infrastructure.Persistence.Repositores.Users;
 using Moq;
 using Moq.AutoMock;
 using System.Threading.Tasks;
@@ -24,7 +22,8 @@ namespace Tests.Unit
         [InlineData(1000, 100, true)]
         [InlineData(50, 100, false)]
         [InlineData(0, 100, false)]
-        public async Task CheckBalanceBidOnLot_Test(long userBalance, long bidAmount, bool expectedResult)
+        public async Task CheckBalanceBidOnLot_Test(
+            long userBalance, long bidAmount, bool expectedResult)
         {
             var user = _mocker.CreateInstance<User>();
             user.Deposit(userBalance);
@@ -53,26 +52,31 @@ namespace Tests.Unit
         }
 
         [Theory]
-        [InlineData(1000, true)]
-        [InlineData(-200, false)]
-        [InlineData(100_111, false)]
-        [InlineData(0, false)]
-        [InlineData(100_001, false)]
-        public void DepositMax_Test(long amount, bool isSuccess)
+        [InlineData(1000)]
+        [InlineData(-200)]
+        [InlineData(100_111)]
+        [InlineData(0)]
+        [InlineData(100_001)]
+        [InlineData(null)]
+        public void DepositMax_Test(long amount)
         {
             // Arrange
             var user = _mocker.CreateInstance<User>();
             var initBalance = user.Balance;
 
 
-            if(isSuccess)
+            if(amount > 0 && amount <= 100_000)
             {
                 user.Deposit(amount);
                 user.Balance.Should().Be(initBalance + amount);
             }
+            else if (amount < 0 || amount > 100_000)
+            {
+                Assert.Fail($"Error values: hight or low");
+            }
             else
             {
-                Assert.Fail("Error values ");
+                Assert.Fail($"Error values {amount}");
             }
         }
 

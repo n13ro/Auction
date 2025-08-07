@@ -12,6 +12,7 @@ namespace Domain.Bids
 
 
         private Bid() { }
+
         public Bid(long amount)
         {
             Amount = amount;

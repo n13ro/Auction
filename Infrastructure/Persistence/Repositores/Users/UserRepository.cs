@@ -2,8 +2,11 @@
 using Domain.Lots;
 using Domain.Users;
 using Infrastructure.Persistence.Context;
+using Infrastructure.Persistence.Repositores.Users.DTOs;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,8 +22,21 @@ namespace Infrastructure.Persistence.Repositores.Users
         {
             _ctx = ctx;
         }
+        public async Task<UserResponse> GetByIdUserAsync(int id)
+        {
+            var byUser = await _ctx.Users.FindAsync(id);
 
-        public async Task CreateUser(User user)
+            return new UserResponse
+            {
+                Id = id,
+                NickName = byUser.NickName,
+                Email = byUser.Email,
+                Password = byUser.Password,
+                Balance = byUser.Balance
+            };
+        }
+
+        public async Task CreateUserAsync(User user)
         {
             if (user != null)
             {
@@ -31,6 +47,19 @@ namespace Infrastructure.Persistence.Repositores.Users
                 await _ctx.Users.AddAsync(newUser);
                 await _ctx.SaveChangesAsync();
             }
+        }
+        public async Task UpdateUserDataAsync(UpdateUserDataRequest req)
+        {
+            await _ctx.Users
+                .Where(u => u.Id == req.Id)
+                .ExecuteUpdateAsync(user => user
+                    .SetProperty(u => u.NickName, req.NickName)
+                    .SetProperty(u => u.Email, req.Email)
+                    .SetProperty(u => u.Password, req.Password)
+                    .SetProperty(u => u.UpdateAt, DateTime.UtcNow)
+                );
+            await _ctx.SaveChangesAsync();
+
         }
 
 
@@ -72,5 +101,6 @@ namespace Infrastructure.Persistence.Repositores.Users
             }
 
         }
+
     }
 }

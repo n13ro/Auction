@@ -15,9 +15,15 @@ namespace Application
             services.AddMediatR(cfg => 
             cfg.RegisterServicesFromAssemblyContaining<CreateUserCommandHandler>());
 
+            services.AddMediatR(cfg =>
+            cfg.RegisterServicesFromAssemblyContaining<UpdateDataUserCommandHandler>());
+
             //services.AddMediatR(cfg => 
             //cfg.RegisterServicesFromAssemblyContaining<>());
-
+            //services.AddMediatR(cfg => 
+            //cfg.RegisterServicesFromAssemblyContaining<>());
+            //services.AddMediatR(cfg => 
+            //cfg.RegisterServicesFromAssemblyContaining<>());
             //services.AddMediatR(cfg => 
             //cfg.RegisterServicesFromAssemblyContaining<>());
 

@@ -1,5 +1,5 @@
 <div class="main">
-    <app-header (show)="menuVisible = !menuVisible"></app-header>
+    <app-header (show) = seeMenu()></app-header>
     <div class="menu" *ngIf="menuVisible">
         <app-time-out-lot></app-time-out-lot>
         <app-price-lot></app-price-lot>

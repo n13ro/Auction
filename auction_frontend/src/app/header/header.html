@@ -5,7 +5,7 @@
     </div>
     <div class="logoWithMenu">
         <p class="logo">PASCALL</p>
-        <img (click)="show.emit()" src="images/menu.svg">
+        <img (click)="show.emit(); toggleImage()" [src]=currentImage style="cursor: pointer;">
     </div>
     <button (click)="Login()" class="login">LOG IN</button>
 </div>  

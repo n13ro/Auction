@@ -1,15 +1,15 @@
-<div *ngFor="let a of arr_id; let i = index" class="lot-map">
+<div *ngFor="let a of arr; let i = index" class="lot-map">
     <div  [ngClass]="i%2===0 ? 'black' : 'yellow' ">
         <div class="card">
         <div class="card-header">
             <div class="timer">
-                <p class="timer-info">11:11:11</p>
+                <p class="timer-info">{{getDate(i)}}</p>
             </div>
-            <img src='images/image.png'>
+            <img src={{getImage(i)}}>
         </div>
         <div class="card-content">
-            <p class="name">Название предмета</p>
-            <p class="price">30.000p.</p>
+            <p class="name">{{getName(i)}}</p>
+            <p class="price">{{getPrice(i)}}</p>
             <button class="review">review</button>
         </div>
     </div>

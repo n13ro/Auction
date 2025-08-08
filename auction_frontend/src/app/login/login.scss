@@ -1,0 +1,99 @@
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #fff;
+    color: #000;
+  }
+  /* Верхняя панель */
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+  }
+  .logo {
+    font-weight: bold;
+    font-size: 14px;
+    letter-spacing: 2px;
+    color: #ff7f2a;
+  }
+  /* Кнопка регистрации */
+  .register-btn {
+    background-color: black;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    transition: background-color 0.3s;
+  }
+  .register-btn:hover {
+    background-color: #333;
+  }
+
+  /* Центр контейнера для формы */
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 80px); /* учитываем высоту header */
+  }
+
+  /* Блок с формой */
+  .login-box {
+    background: rgba(255,255,255,0.1);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    backdrop-filter: blur(10px);
+    width: 300px;
+    max-width: 90%;
+  }
+
+  /* Заголовок */
+  .title {
+    text-align: center;
+    font-size: 48px;
+    font-weight: bold;
+    color: #ff7f2a;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+  }
+
+  /* Поля ввода */
+  input[type="email"],
+  input[type="password"] {
+    width: 100%;
+    padding: 10px 15px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+
+  /* Кнопка входа */
+  .login-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: black;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+  }
+
+  .login-btn:hover {
+    background-color: #333;
+  }
+
+  /* Анимация размытия и размазывания текста при фокусе */
+  /* Можно добавить при необходимости, например: */
+  input:focus {
+    outline: none;
+    box-shadow: 0 0 5px #ff7f2a;
+  }

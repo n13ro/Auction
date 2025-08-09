@@ -1,5 +1,6 @@
 <div class="main">
-    <app-header (show) = seeMenu()></app-header>
+    <app-header></app-header>
+    <img (click)="seeMenu(); toggleImage()" [src]=currentImage style="cursor: pointer;">
     <div class="menu" *ngIf="menuVisible">
         <app-time-out-lot></app-time-out-lot>
         <app-price-lot></app-price-lot>

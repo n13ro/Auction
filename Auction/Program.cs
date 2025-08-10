@@ -1,6 +1,8 @@
 using Application;
 using Infrastructure;
+using Registration;
 using Microsoft.OpenApi.Models;
+
 namespace Auction
 {
     public class Program
@@ -12,7 +14,7 @@ namespace Auction
             // Add services to the container.
             builder.Services.AddApplication();
             builder.Services.AddInfrastructure();
-
+            builder.Services.AddAuthCustom(builder.Configuration);
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

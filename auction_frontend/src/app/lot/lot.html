@@ -1,66 +1,76 @@
 <div class="container">
+    <div class="bet" *ngIf="betting">
+        <app-bet (toggle)="closeBet()"></app-bet>
+    </div>
         <app-header></app-header>
         <div class="carousel">
             <img src="./images/big_car.png"/>
             <!-- Можно добавить стрелки или слайды -->
         </div>
-        <h2 class="car-name">Mercedes cле 53 amg 2024</h2>
-        <div class="car-details">
-            <div class="detail">
-                <p class="label">Character meets charisma in the Mercedes-AMG CLE 53 4MATIC+ Coupé, blending thrilling performance, confident style and genuine comfort. Tailored to your unique taste.</p>
+        <h2 class="car-name">Mercedes cle 53 amg 2024</h2>
+        <div class="info">
+            <div class="car-details">
+                <div class="detail">
+                    <p class="label">Character meets charisma in the Mercedes-AMG CLE 53 4MATIC+ Coupé, blending thrilling performance, confident style and genuine comfort. Tailored to your unique taste.</p>
+                </div>
+                <div class="stats">
+                    <div class="stat">
+                        <span class="name">Какая-то ещё херь: </span>
+                        <span class="value">560</span>
+                        <span class="unit">nm</span>
+                    </div>
+                    <div class="stat">
+                        <span class="name">Разгон: </span>
+                        <span class="value">4.2</span>
+                        <span class="unit">sec</span>
+                    </div>
+                    <div class="stat">
+                        <span class="name">Заряд: </span>
+                        <span class="value">330</span>
+                        <span class="unit">kw</span>
+                    </div>
+                </div>
             </div>
-            <div class="stats">
-                <div class="stat">
-                    <span class="value">560</span>
-                    <span class="unit">nm</span>
+            <div class="bets">
+                <div class="betting-info">
+                    <div class="initial-bet">
+                        <h3>Начальная ставка:</h3>
+                        <h3 class="amount">1.000.000р.</h3>
+                    </div>
+                    <div class="last-bet">
+                        <h3>Последняя ставка:</h3>
+                        <h3 class="amount">5.000.000р.</h3>
+                    </div>
                 </div>
-                <div class="stat">
-                    <span class="value">4.2</span>
-                    <span class="unit">sec</span>
-                </div>
-                <div class="stat">
-                    <span class="value">330</span>
-                    <span class="unit">kw</span>
+                <div class="leaderboard">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>NAME</th>
+                                <th>TIME</th>
+                                <th>BET</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>POUL SHARK 2</td>
+                                <td>11:11:13</td>
+                                <td>5.000.000р.</td>
+                            </tr>
+                            <tr>
+                                <td>POUL SHARK 1</td>
+                                <td>11:11:12</td>
+                                <td>3.500.000р.</td>
+                            </tr>
+                            <tr>
+                                <td>POUL SHARK</td>
+                                <td>11:11:11</td>
+                                <td>1.000.000р.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button class="action-btn" (click) = "showBet()">Сделать ставку</button>
                 </div>
             </div>
         </div>
-        <div class="betting-info">
-            <div class="initial-bet">
-                <h3>Начальная ставка:</h3>
-                <p class="amount">1.000.000р.</p>
-            </div>
-            <div class="last-bet">
-                <h3>Последняя ставка:</h3>
-                <p class="amount">5.000.000р.</p>
-            </div>
-        </div>
-        <div class="leaderboard">
-            <table>
-                <thead>
-                    <tr>
-                        <th>NAME</th>
-                        <th>TIME</th>
-                        <th>BET</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>POUL SHARK 2</td>
-                        <td>11:11:13</td>
-                        <td>5.000.000р.</td>
-                    </tr>
-                    <tr>
-                        <td>POUL SHARK 1</td>
-                        <td>11:11:12</td>
-                        <td>3.500.000р.</td>
-                    </tr>
-                    <tr>
-                        <td>POUL SHARK</td>
-                        <td>11:11:11</td>
-                        <td>1.000.000р.</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <button class="action-btn">Сделать ставку</button>
     </div>

@@ -5,6 +5,10 @@ body {
     color: #000;
 }
 
+.info{
+    display: flex;
+}
+
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -66,9 +70,11 @@ header {
 /* Car details */
 .car-details {
     display: flex;
+    max-width: 30%;
     flex-direction: column;
     align-items: center;
     margin-bottom: 20px;
+    border-right:#000 solid 2px
 }
 
 .detail {
@@ -84,14 +90,13 @@ header {
 
 /* Stats */
 .stats {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
+    display: contents;
     margin-top: 10px;
 }
 
 .stat {
-    display: flex;
+    justify-content: center;
+    padding-bottom: 15px;
     flex-direction: column;
     align-items: center;
 }
@@ -108,57 +113,64 @@ header {
 }
 
 /* Betting info */
-.betting-info {
+.bets {
     display: flex;
     justify-content: center;
-    gap: 50px;
-    margin-bottom: 20px;
+    gap: 20px;
     flex-wrap: wrap;
+}
+.betting-info{
+    display: flex;
 }
 
 .initial-bet, .last-bet {
-    background-color: #fff;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     padding: 15px 20px;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     min-width: 200px;
 }
 
 h3 {
     margin-top: 0;
     margin-bottom: 10px;
-    font-size: 16px;
+    font-size: 24px;
     font-weight: bold;
 }
 
 .amount {
-    font-size: 20px;
+    font-size: 30px;
     color: #ff7f00;
     font-weight: bold;
 }
 
 /* Leaderboard table */
-.leaderboard table {
+.leaderboard{
+    display: flex;
+    flex-direction: column;
     width: 100%;
-    border-collapse: collapse;
     background-color: #fff;
-    border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-thead {
-    background-color: #eee;
 }
 
 th, td {
     padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
-
-th {
+    text-align: center;
+    position: relative; 
+    padding-bottom: 10px; 
     font-weight: bold;
+    font-size: 18px;
+}
+th::after, td::after{
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: -10px;
+    width: calc(100% + 10px); 
+    height: 2px; 
+    background-color: black;
 }
 
 tbody tr:hover {
@@ -167,9 +179,8 @@ tbody tr:hover {
 
 /* Button styles */
 .action-btn {
-    display: block;
     width: 200px;
-    margin: 0 auto 30px auto;
+    margin: 20px auto 30px auto;
     padding: 12px;
     background-color: black;
     color: white;

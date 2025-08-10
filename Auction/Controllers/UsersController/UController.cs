@@ -10,7 +10,6 @@ namespace Auction.Controllers.UsersController
     public class UController : ControllerBase
     {
         private readonly IMediator _mediator;
-
         public UController(IMediator mediator)
         {
             _mediator = mediator;
@@ -23,11 +22,13 @@ namespace Auction.Controllers.UsersController
         }
 
         [HttpPut("{userId}")]
-        public async Task UpdateUserData(int userId, 
-            UpdateUserDataCommand cmd )
+        public async Task UpdateUserData(int userId, UpdateUserDataCommand cmd)
         {
+
             cmd.Id = userId;
             await _mediator.Send(cmd);
+
         }
+
     }
 }

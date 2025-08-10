@@ -1,6 +1,7 @@
 ﻿using Domain.Lots;
 using Domain.Users;
 using Infrastructure.Persistence.Context;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,20 +37,26 @@ namespace Infrastructure.Persistence.Repositores.Lots
             }
         }
 
-        public async Task<Lot> CreateLotAsync(User user, string name, string description, long startingPrice, long minBet, bool isExtraTime, TimeSpan lotLife)
+        public async Task<Lot> CreateLotAsync(int userId, string name, 
+            string description, long startingPrice, 
+            long minBet, bool isExtraTime, TimeSpan lotLife)
         {
-            Lot newLot = new(name, description, 
-                            startingPrice, minBet, 
-                            isExtraTime, lotLife);
-            
-            
-            user.AddLot(newLot);
-            user.UpdateToLastModified();
+            var user = await _ctx.Users.FirstOrDefaultAsync(k => k.Id == userId);
+            if (user != null)
+            {
+                Lot newLot = new(name, description,
+                                startingPrice, minBet,
+                                isExtraTime, lotLife);
 
-            await _ctx.Lots.AddAsync(newLot);
-            await _ctx.SaveChangesAsync();
+                user.AddLot(newLot);
+                user.UpdateToLastModified();
 
-            return newLot;
+                await _ctx.Lots.AddAsync(newLot);
+                await _ctx.SaveChangesAsync();
+
+                return newLot;
+            }
+            return null;
         }
     }
 }

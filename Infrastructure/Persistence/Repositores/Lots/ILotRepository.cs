@@ -10,7 +10,8 @@ namespace Infrastructure.Persistence.Repositores.Lots
 {
     public interface ILotRepository
     {
-        Task<Lot> CreateLotAsync(User user, string name, string description, long startingPrice,
+        Task<Lot> CreateLotAsync(int userId, string name, 
+            string description, long startingPrice,
            long minBet, bool isExtraTime, TimeSpan lotLife);
 
         Task CloseLotAsync(Lot lot);

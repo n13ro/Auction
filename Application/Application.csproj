@@ -15,7 +15,6 @@
     <Folder Include="Services\BidService\Command\" />
     <Folder Include="Services\BidService\DTOs\" />
     <Folder Include="Services\BidService\Queries\" />
-    <Folder Include="Services\LotService\Command\" />
     <Folder Include="Services\LotService\DTOs\" />
     <Folder Include="Services\LotService\Queries\" />
     <Folder Include="Services\UserService\Queries\" />

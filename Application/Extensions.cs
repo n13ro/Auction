@@ -1,4 +1,5 @@
-﻿using Application.Services.UserService.Command;
+﻿using Application.Services.LotService.Command;
+using Application.Services.UserService.Command;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -10,22 +11,20 @@ namespace Application
 {
     public static class Extensions
     {
-        public static IServiceCollection AddApplication(this IServiceCollection services)
+        public static IServiceCollection AddApplication
+            (this IServiceCollection services) //IConfiguration configuration)
         {
-            services.AddMediatR(cfg => 
-            cfg.RegisterServicesFromAssemblyContaining<CreateUserCommandHandler>());
+            services.AddMediatR(cfg => cfg
+            .RegisterServicesFromAssemblyContaining<CreateUserCommandHandler>());
 
-            services.AddMediatR(cfg =>
-            cfg.RegisterServicesFromAssemblyContaining<UpdateDataUserCommandHandler>());
+            services.AddMediatR(cfg => cfg
+            .RegisterServicesFromAssemblyContaining<UpdateUserDataCommandHandler>());
 
-            //services.AddMediatR(cfg => 
-            //cfg.RegisterServicesFromAssemblyContaining<>());
-            //services.AddMediatR(cfg => 
-            //cfg.RegisterServicesFromAssemblyContaining<>());
-            //services.AddMediatR(cfg => 
-            //cfg.RegisterServicesFromAssemblyContaining<>());
-            //services.AddMediatR(cfg => 
-            //cfg.RegisterServicesFromAssemblyContaining<>());
+            services.AddMediatR(cfg => cfg
+           .RegisterServicesFromAssemblyContaining<CreateLotCommandHandler>());
+
+            // services.AddMediatR(cfg => cfg
+            //.RegisterServicesFromAssemblyContaining<>());
 
             return services;
         }

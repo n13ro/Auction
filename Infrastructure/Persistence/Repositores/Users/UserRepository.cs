@@ -102,5 +102,17 @@ namespace Infrastructure.Persistence.Repositores.Users
 
         }
 
+        public async Task<UserResponse> GetByEmailUserAsync(string email)
+        {
+            var user = await _ctx.Users.FirstOrDefaultAsync(u => u.Email == email);
+            return new UserResponse
+            {
+                Id = user.Id,
+                NickName = user.NickName,
+                Email = user.Email,
+                Password = user.Password,
+                Balance = user.Balance
+            };
+        }
     }
 }

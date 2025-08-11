@@ -1,11 +1,7 @@
-﻿using Application.Services.LotService.Command;
+﻿using Application.Services.LoginService;
+using Application.Services.LotService.Command;
 using Application.Services.UserService.Command;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application
 {
@@ -18,13 +14,13 @@ namespace Application
             .RegisterServicesFromAssemblyContaining<CreateUserCommandHandler>());
 
             services.AddMediatR(cfg => cfg
-            .RegisterServicesFromAssemblyContaining<UpdateUserDataCommandHandler>());
+            .RegisterServicesFromAssemblyContaining<UpdateDataUserCommandHandler>());
 
             services.AddMediatR(cfg => cfg
            .RegisterServicesFromAssemblyContaining<CreateLotCommandHandler>());
 
-            // services.AddMediatR(cfg => cfg
-            //.RegisterServicesFromAssemblyContaining<>());
+            services.AddMediatR(cfg => cfg
+           .RegisterServicesFromAssemblyContaining<LoginCommandHandler>());
 
             return services;
         }

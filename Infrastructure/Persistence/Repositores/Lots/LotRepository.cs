@@ -41,22 +41,23 @@ namespace Infrastructure.Persistence.Repositores.Lots
             string description, long startingPrice, 
             long minBet, bool isExtraTime, TimeSpan lotLife)
         {
-            var user = await _ctx.Users.FirstOrDefaultAsync(k => k.Id == userId);
-            if (user != null)
+            var user = await _ctx.Users.FindAsync(userId);
+                //if (user != null)
             {
                 Lot newLot = new(name, description,
                                 startingPrice, minBet,
                                 isExtraTime, lotLife);
 
-                user.AddLot(newLot);
-                user.UpdateToLastModified();
+                user?.AddLot(newLot);
+                user?.UpdateToLastModified();
 
                 await _ctx.Lots.AddAsync(newLot);
                 await _ctx.SaveChangesAsync();
 
                 return newLot;
+                //}
+                //return null;
             }
-            return null;
         }
     }
 }

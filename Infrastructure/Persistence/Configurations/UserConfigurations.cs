@@ -10,6 +10,8 @@ namespace Infrastructure.Persistence.Configurations
         public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.HasKey(x => x.Id);
+            builder.HasIndex(x => x.Email).IsUnique();
+            builder.HasIndex(x => x.Email).IsUnique();
 
             builder.HasMany(k => k.Lots)
                 .WithMany()

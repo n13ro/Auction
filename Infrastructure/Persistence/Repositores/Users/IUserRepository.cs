@@ -13,6 +13,7 @@ namespace Infrastructure.Persistence.Repositores.Users
         Task CreateUserAsync(User user);
         Task UpdateUserDataAsync(UpdateUserDataRequest req);
         Task<UserResponse> GetByIdUserAsync(int id);
+        Task<UserResponse> GetByEmailUserAsync(string email);
         Task PlaceBidAsync(User user, Lot lot, long amount);
         Task<bool> CanUserBidOnLotAsync(User user, Lot lot, long amount);
         Task WithdrawWonBidsAsync(User user, Lot lot);

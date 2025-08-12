@@ -8,7 +8,7 @@ namespace Application
     public static class Extensions
     {
         public static IServiceCollection AddApplication
-            (this IServiceCollection services) //IConfiguration configuration)
+            (this IServiceCollection services) 
         {
             services.AddMediatR(cfg => cfg
             .RegisterServicesFromAssemblyContaining<CreateUserCommandHandler>());
@@ -21,6 +21,24 @@ namespace Application
 
             services.AddMediatR(cfg => cfg
            .RegisterServicesFromAssemblyContaining<LoginCommandHandler>());
+
+            services.AddMediatR(cfg => cfg
+           .RegisterServicesFromAssemblyContaining<DepositOnBalanceCommandHandler>());
+
+           // services.AddMediatR(cfg => cfg
+           //.RegisterServicesFromAssemblyContaining<>());
+
+           // services.AddMediatR(cfg => cfg
+           //.RegisterServicesFromAssemblyContaining<>());
+
+           // services.AddMediatR(cfg => cfg
+           //.RegisterServicesFromAssemblyContaining<>());
+
+           // services.AddMediatR(cfg => cfg
+           //.RegisterServicesFromAssemblyContaining<>());
+
+           // services.AddMediatR(cfg => cfg
+           //.RegisterServicesFromAssemblyContaining<>());
 
             return services;
         }

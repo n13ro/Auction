@@ -22,18 +22,11 @@ namespace Infrastructure.Persistence.Repositores.Users
         {
             _ctx = ctx;
         }
-        public async Task<UserResponse> GetByIdUserAsync(int id)
+        public async Task<User> GetByIdUserAsync(int id)
         {
             var byUser = await _ctx.Users.FindAsync(id);
 
-            return new UserResponse
-            {
-                Id = id,
-                NickName = byUser.NickName,
-                Email = byUser.Email,
-                Password = byUser.Password,
-                Balance = byUser.Balance
-            };
+            return byUser;
         }
 
         public async Task CreateUserAsync(User user)
@@ -102,17 +95,17 @@ namespace Infrastructure.Persistence.Repositores.Users
 
         }
 
-        public async Task<UserResponse> GetByEmailUserAsync(string email)
+        public async Task<User> GetByEmailUserAsync(string email)
         {
             var user = await _ctx.Users.FirstOrDefaultAsync(u => u.Email == email);
-            return new UserResponse
-            {
-                Id = user.Id,
-                NickName = user.NickName,
-                Email = user.Email,
-                Password = user.Password,
-                Balance = user.Balance
-            };
+            return user;
+        }
+
+        public async Task DepositOnBalanceAsync(int id, long amount)
+        {
+            var user = await _ctx.Users.FindAsync(id);
+            user?.Deposit(amount);
+            await _ctx.SaveChangesAsync();
         }
     }
 }

@@ -8,6 +8,9 @@ namespace Application.Services.LotService.Command
 {
     public class CloseLotCommandHandler
     {
+        public class CloseLotCommand
+        {
 
+        }
     }
 }

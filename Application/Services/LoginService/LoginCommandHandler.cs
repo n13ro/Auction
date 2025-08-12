@@ -8,6 +8,12 @@ using System.Threading.Tasks;
 
 namespace Application.Services.LoginService
 {
+    public class LoginCommand : IRequest<(int Id, string Email, string NickName)>
+    {
+        public string Email { get; set; }
+        public string Password { get; set; }
+    }
+
     public class LoginCommandHandler : IRequestHandler<LoginCommand, (int Id, string Email, string NickName)>
     {
         private readonly IUserRepository _userRepository;

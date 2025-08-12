@@ -1,7 +1,9 @@
 ﻿using Application.Services.UserService.Command;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Auction.Controllers.UsersController
 {
@@ -15,7 +17,18 @@ namespace Auction.Controllers.UsersController
             _mediator = mediator;
         }
 
-        [HttpPost]
+        [Authorize]
+        [HttpPost("DepositOnBalance")]
+        public async Task DepositOnBalic(DepositOnBalanceCommand cmd)
+        {
+            var userId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            cmd.Id = userId;
+            await _mediator.Send(cmd);
+
+        }
+
+        [Authorize]
+        [HttpPost("CreateUser")]
         public async Task Create(CreateUserCommand cmd)
         {
             await _mediator.Send(cmd);

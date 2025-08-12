@@ -58,6 +58,12 @@ namespace Auction
             });
 
 
+            builder.Logging.ClearProviders();
+            builder.Logging.AddSimpleConsole(o =>
+            {
+                o.TimestampFormat = "HH:mm:ss";
+                o.ColorBehavior = Microsoft.Extensions.Logging.Console.LoggerColorBehavior.Enabled;
+            });
 
 
             var app = builder.Build();

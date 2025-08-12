@@ -39,7 +39,7 @@ namespace Infrastructure.Persistence.Repositores.Lots
 
         public async Task<Lot> CreateLotAsync(int userId, string name, 
             string description, long startingPrice, 
-            long minBet, bool isExtraTime, TimeSpan lotLife)
+            long minBet, bool isExtraTime, double lotLife)
         {
             var user = await _ctx.Users.FindAsync(userId);
                 //if (user != null)

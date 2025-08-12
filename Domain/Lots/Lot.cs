@@ -22,14 +22,14 @@ namespace Domain.Lots
         private Lot() { }
 
         public Lot(string name, string description, long startingPrice, 
-            long minBet,bool isExtraTime,TimeSpan lotLife)
+            long minBet,bool isExtraTime,double lotLife)
         {
             Name = name;
             Description = description;
             StartingPrice = startingPrice;
             MinBet = minBet;
             StartTime = DateTime.UtcNow;
-            EndTime = StartTime.Add(lotLife);
+            EndTime = StartTime.AddMinutes(lotLife);
             IsExtraTime = isExtraTime;
             SetUpdate();
         }

@@ -4,20 +4,21 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class User {
-  private user: { 
-    name: string,
-    picture: string
-  } | null = null;
+  public name: string | null = null;
+  public picture: string | null = null;
+
+  
 
   setUser(name: string, picture:string) {
-    this.user = { name, picture };
+    this.name = name;
+    this.picture = picture;
   }
 
   getUserName() {
-    return this.user?.name;
+    return this.name;
   }
 
   getUserPicture(){
-    return this.user?.picture;
+    return this.picture;
   }
 }

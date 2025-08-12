@@ -1,11 +1,21 @@
 <div class="header">
     <p class="logo">PASCALL</p>
-    <div class="ifNotReg">
+    <div *ngIf="getName()==null" class="ifNotReg">
         <div class="register" *ngIf="getUrl()=='/login'">
-            <button (click)="goTo('register')" class="login click">REGISTER</button>
+            <button (click)="goTo('register')" class="click">REGISTER</button>
         </div>
         <div class="login" *ngIf="getUrl()!='/login'">
-            <button (click)="goTo('login')" class="login click">LOG IN</button>
+            <button (click)="goTo('login')" class="click">LOG IN</button>
+        </div>
+    </div>
+    <div *ngIf="getName()!=null" class="ifReg">
+        <div class="userInfo">
+            <h3 class="name" (click)="toggleMenu()">{{getName()}}</h3>
+            <img src={{getAvatar()}} class="avatar" (click)="toggleMenu()">
+        </div>
+        <div class="menu" *ngIf="menu">
+            <button class="click" (click) = "goTo('user')">Profile</button>
+            <button class="click" (click) = "logOut()">Exit</button>
         </div>
     </div>
     <div class="search" *ngIf="getUrl()=='/'">

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Header } from '../header/header';
+import { User } from '../user';
 
 @Component({
   selector: 'app-login',
@@ -9,9 +10,14 @@ import { Header } from '../header/header';
   styleUrl: './login.scss'
 })
 export class Login {
-  constructor(private router: Router){}
+  constructor(
+    private router: Router,
+    private user: User
+    ){}
 
-  Register(){
-    this.router.navigate(['/register']);
+  Login(name: string, img: string){
+    this.user.name = name;
+    this.user.picture = img;
+    this.router.navigate(['/']);
   }
 }

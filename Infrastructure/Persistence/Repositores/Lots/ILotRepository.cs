@@ -12,7 +12,7 @@ namespace Infrastructure.Persistence.Repositores.Lots
     {
         Task<Lot> CreateLotAsync(int userId, string name, 
             string description, long startingPrice,
-           long minBet, bool isExtraTime, TimeSpan lotLife);
+           long minBet, bool isExtraTime, double lotLife);
 
         Task CloseLotAsync(Lot lot);
         Task CloseLotByUserAsync(Lot lot);

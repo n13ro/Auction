@@ -16,20 +16,21 @@ namespace Domain.Lots
         public bool IsExtraTime { get; private set; }
         public LotStatus Status { get; private set; } = LotStatus.Active;
 
+
         private readonly List<Bid> _bids = new();
         public ICollection<Bid> Bids => _bids;
 
         private Lot() { }
 
         public Lot(string name, string description, long startingPrice, 
-            long minBet,bool isExtraTime,TimeSpan lotLife)
+            long minBet,bool isExtraTime,double lotLife)
         {
             Name = name;
             Description = description;
             StartingPrice = startingPrice;
             MinBet = minBet;
             StartTime = DateTime.UtcNow;
-            EndTime = StartTime.Add(lotLife);
+            EndTime = StartTime.AddMinutes(lotLife);
             IsExtraTime = isExtraTime;
             SetUpdate();
         }

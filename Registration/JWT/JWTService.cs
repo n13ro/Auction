@@ -47,8 +47,7 @@ namespace Registration.JWT
         }
 
         //public string ValidationToken(string token)
-        //{
-            
+        //{ 
         //}
     }
 }

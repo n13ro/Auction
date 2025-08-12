@@ -23,7 +23,7 @@ namespace Auction.Controllers.LotsController
         [HttpPost]
         public async Task Create(CreateLotCommand cmd)
         {
-            var userIdString = User.FindFirstValue(System.Security.Claims.ClaimTypes.NameIdentifier);
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
             int UserId = Convert.ToInt32(userIdString);
             await _mediator.Send(new CreateLotCommand
             {

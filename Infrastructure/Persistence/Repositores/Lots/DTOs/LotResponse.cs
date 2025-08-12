@@ -17,6 +17,6 @@ namespace Infrastructure.Persistence.Repositores.Lots.DTOs
         public DateTime EndTime { get; set; }
         public bool IsExtraTime { get; set; }
         public LotStatus Status { get; set; } = LotStatus.Active;
-        public TimeSpan LotLife { get; set; }
+        public double LotLife { get; set; }
     }
 }

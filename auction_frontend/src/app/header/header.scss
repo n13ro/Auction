@@ -1,5 +1,6 @@
 .header{
     display: flex;
+    flex-direction: row-reverse;
     padding-left: 10%;
     padding-right: 10%;
     align-items: center;
@@ -34,4 +35,7 @@
     background-color: #000;
     color: #fff;
     font-weight: 600;
+}
+.click{
+    cursor: pointer;
 }

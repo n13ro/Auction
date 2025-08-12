@@ -1,9 +1,10 @@
+import { NgIf } from '@angular/common';
 import { Component, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
-  imports: [],
+  imports: [NgIf],
   templateUrl: './header.html',
   styleUrl: './header.scss'
 })
@@ -13,8 +14,12 @@ export class Header {
     private router: Router
   ){}
 
-  Login(){
-    this.router.navigate(['/login']);
+  getUrl(){
+    return this.router.url;
+  }
+
+  goTo(path: string){
+    this.router.navigate([path]);
   }
 }
 

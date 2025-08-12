@@ -1,8 +1,18 @@
 <div class="header">
-    <div class="search">
+    <p class="logo">PASCALL</p>
+    <div class="ifNotReg">
+        <div class="register" *ngIf="getUrl()=='/login'">
+            <button (click)="goTo('register')" class="login click">REGISTER</button>
+        </div>
+        <div class="login" *ngIf="getUrl()!='/login'">
+            <button (click)="goTo('login')" class="login click">LOG IN</button>
+        </div>
+    </div>
+    <div class="search" *ngIf="getUrl()=='/'">
         <img src='images/search.svg'>
         <input class="searchLine">
     </div>
-        <p class="logo">PASCALL</p>
-    <button (click)="Login()" class="login">LOG IN</button>
+    <div class="return" *ngIf="getUrl()=='/lot'">
+        <img class="click" (click)="goTo('/')" src="./images/return.svg">
+    </div>
 </div>  

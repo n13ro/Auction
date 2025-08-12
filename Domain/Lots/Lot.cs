@@ -28,7 +28,7 @@ namespace Domain.Lots
             Description = description;
             StartingPrice = startingPrice;
             MinBet = minBet;
-            StartTime = DateTime.Now;
+            StartTime = DateTime.UtcNow;
             EndTime = StartTime.Add(lotLife);
             IsExtraTime = isExtraTime;
             SetUpdate();

@@ -45,5 +45,10 @@ namespace Registration.JWT
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
+        //public string ValidationToken(string token)
+        //{
+            
+        //}
     }
 }

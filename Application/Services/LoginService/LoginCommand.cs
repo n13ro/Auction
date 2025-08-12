@@ -5,12 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Services.UserService.Command
+namespace Application.Services.LoginService
 {
-    public class CreateUserCommand : IRequest
+    public class LoginCommand : IRequest<(int Id, string Email, string NickName)>
     {
-        public int Id { get; set; }
-        public string NickName { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
     }

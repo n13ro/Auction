@@ -6,6 +6,7 @@ using Infrastructure.Persistence.Repositores.Users.DTOs;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,10 +22,18 @@ namespace Infrastructure.Persistence.Repositores.Users
         {
             _ctx = ctx;
         }
-
-        public async Task<bool> CanUserBidOnLotAsync(User user, Lot lot, long amount)
+        public async Task<UserResponse> GetByIdUserAsync(int id)
         {
-            return user.Balance >= amount && lot.IsActive;
+            var byUser = await _ctx.Users.FindAsync(id);
+
+            return new UserResponse
+            {
+                Id = id,
+                NickName = byUser.NickName,
+                Email = byUser.Email,
+                Password = byUser.Password,
+                Balance = byUser.Balance
+            };
         }
 
         public async Task CreateUserAsync(User user)
@@ -39,36 +48,26 @@ namespace Infrastructure.Persistence.Repositores.Users
                 await _ctx.SaveChangesAsync();
             }
         }
-
-        public async Task UpdateUserDataAsync(UpdateUserDataRequest request)
+        public async Task UpdateUserDataAsync(UpdateUserDataRequest req)
         {
-            var byUser = await _ctx.Users.FindAsync(request.Id);
-
             await _ctx.Users
-                .Where(u => u.Id == request.Id)
+                .Where(u => u.Id == req.Id)
                 .ExecuteUpdateAsync(user => user
-                    .SetProperty(u => u.NickName, request.NickName)
-                    .SetProperty(u => u.Email, request.Email)
-                    .SetProperty(u => u.Password, request.Password)
+                    .SetProperty(u => u.NickName, req.NickName)
+                    .SetProperty(u => u.Email, req.Email)
+                    .SetProperty(u => u.Password, req.Password)
                     .SetProperty(u => u.UpdateAt, DateTime.UtcNow)
                 );
             await _ctx.SaveChangesAsync();
 
         }
 
-        public async Task<UserResponse> GetByIdUserAsync(int id)
-        {
-            var byUser = await _ctx.Users.FindAsync(id);
 
-            return new UserResponse
-            {
-                Id = id,
-                NickName = byUser.NickName,
-                Email = byUser.Email,
-                Password = byUser.Password,
-                Balance = byUser.Balance
-            };
+        public async Task<bool> CanUserBidOnLotAsync(User user, Lot lot, long amount)
+        {
+            return user.Balance >= amount && lot.IsActive;
         }
+
 
         public async Task PlaceBidAsync(User user, Lot lot, long amount)
         {
@@ -101,6 +100,19 @@ namespace Infrastructure.Persistence.Repositores.Users
                 await _ctx.SaveChangesAsync();
             }
 
+        }
+
+        public async Task<UserResponse> GetByEmailUserAsync(string email)
+        {
+            var user = await _ctx.Users.FirstOrDefaultAsync(u => u.Email == email);
+            return new UserResponse
+            {
+                Id = user.Id,
+                NickName = user.NickName,
+                Email = user.Email,
+                Password = user.Password,
+                Balance = user.Balance
+            };
         }
     }
 }

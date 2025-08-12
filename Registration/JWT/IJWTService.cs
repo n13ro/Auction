@@ -9,5 +9,6 @@ namespace Registration.JWT
     public interface IJWTService
     {
         string CreateToken(int userId, string email, string nickName);
+        //string ValidationToken(string token);
     }
 }

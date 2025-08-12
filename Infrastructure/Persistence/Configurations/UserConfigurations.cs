@@ -9,7 +9,6 @@ namespace Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.HasKey(x => x.Id);
 
             builder.HasMany(k => k.Lots)
                 .WithMany()

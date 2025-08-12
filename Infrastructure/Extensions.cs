@@ -1,4 +1,5 @@
-﻿using Infrastructure.Persistence.Context;
+﻿using Infrastructure.Background;
+using Infrastructure.Persistence.Context;
 using Infrastructure.Persistence.Repositores.Bids;
 using Infrastructure.Persistence.Repositores.Lots;
 using Infrastructure.Persistence.Repositores.Users;
@@ -19,6 +20,8 @@ namespace Infrastructure
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ILotRepository, LotRepository>();
             services.AddScoped<IBidRepository, BidRepository>();
+
+            services.AddHostedService<LotAutoCloser>();
             return services;
         }
     }

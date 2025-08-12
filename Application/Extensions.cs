@@ -27,6 +27,9 @@ namespace Application
             services.AddMediatR(cfg => cfg
            .RegisterServicesFromAssemblyContaining<LoginCommandHandler>());
 
+            services.AddMediatR(cfg => cfg
+           .RegisterServicesFromAssemblyContaining<DepositOnBalanceCommandHandler>());
+
             return services;
         }
     }

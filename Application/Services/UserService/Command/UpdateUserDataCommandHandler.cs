@@ -9,6 +9,15 @@ using System.Threading.Tasks;
 
 namespace Application.Services.UserService.Command
 {
+    #region UpdateData Service
+    public class UpdateUserDataCommand : IRequest
+    {
+        public int Id { get; set; }
+        public string NickName { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
+    }
+    #endregion
     public class UpdateUserDataCommandHandler : IRequestHandler<UpdateUserDataCommand>
     {
         private readonly IUserRepository _userRepository;
@@ -26,15 +35,15 @@ namespace Application.Services.UserService.Command
             {
                 if (string.IsNullOrEmpty(request.NickName))
                 {
-                    user.NickName = request.NickName;
+                    user.UpdateNickName(request.NickName);
                 }
                 if (string.IsNullOrEmpty(request.Email))
                 {
-                    user.Email = request.Email;
+                    user.UpdateEmail(request.Email);
                 }
                 if (string.IsNullOrEmpty(request.Password))
                 {
-                    user.Password = request.Password;
+                    user.UpdatePassword(request.Password);
                 }
             }
             var updateRequest = new UpdateUserDataRequest

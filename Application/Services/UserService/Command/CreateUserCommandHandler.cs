@@ -9,6 +9,15 @@ using System.Threading.Tasks;
 
 namespace Application.Services.UserService.Command
 {
+    #region CreateUser Service
+    public class CreateUserCommand : IRequest
+    {
+        public int Id { get; set; }
+        public string NickName { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
+    }
+    #endregion
     public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand>
     {
         private readonly IUserRepository _userRepository;

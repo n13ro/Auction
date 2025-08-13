@@ -24,7 +24,11 @@ namespace Infrastructure.Background
         }
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
+            var originalColor = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Red;
             _logger.LogInformation("Lot closing algorithm has started.");
+            Console.ForegroundColor = originalColor;
+            //_logger.LogInformation("Lot closing algorithm has started.");
             while (!stoppingToken.IsCancellationRequested)
             {
                 
@@ -50,7 +54,12 @@ namespace Infrastructure.Background
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Error in LotAutoCloser: {ex.Message}");
+                    //var originalColor = Console.ForegroundColor;
+                    //Console.ForegroundColor = ConsoleColor.Red;
+                    //_logger.LogError(ex, "Error in LotAutoCloser");
+                    //Console.ForegroundColor = originalColor;
+
+                    
                 }
 
                 await Task.Delay(_period, stoppingToken);

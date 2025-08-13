@@ -1,5 +1,6 @@
 ﻿using Domain.Bids;
 using Domain.Core;
+using Domain.Users;
 using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Lots
@@ -15,6 +16,7 @@ namespace Domain.Lots
         public DateTime EndTime { get; private set; }
         public bool IsExtraTime { get; private set; }
         public LotStatus Status { get; private set; } = LotStatus.Active;
+
 
         private readonly List<Bid> _bids = new();
         public ICollection<Bid> Bids => _bids;
@@ -69,7 +71,7 @@ namespace Domain.Lots
 
         }
 
-        internal void AddBid(Bid bid)
+        public void AddBid(Bid bid)
         {
             _bids.Add( bid );
         }

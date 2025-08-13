@@ -9,6 +9,10 @@ namespace Domain.Bids
         public long Amount { get; private set; }
         public DateTime PlacedAt { get; private set; }
         public BidStatus Status { get; private set; }
+        public int userId { get; private set; }
+        public User user { get; private set; }
+        public int lotId { get; private set; }
+        public Lot lot { get; private set; }
 
 
         private Bid() { }
@@ -19,6 +23,16 @@ namespace Domain.Bids
             SetUpdate();
         }
 
+        public void SetUserId(int id)
+        {
+            userId = id;
+            SetUpdate();
+        }
+        public void SetLotId(int id)
+        {
+            lotId = id;
+            SetUpdate();
+        }
         public void MarkAsWinning()
         {
             Status = BidStatus.Winning;

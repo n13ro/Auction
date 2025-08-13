@@ -1,4 +1,5 @@
-﻿using Application.Services.LoginService;
+﻿using Application.Services.BidService.Command;
+using Application.Services.LoginService;
 using Application.Services.LotService.Command;
 using Application.Services.UserService.Command;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,6 +30,9 @@ namespace Application
 
             services.AddMediatR(cfg => cfg
            .RegisterServicesFromAssemblyContaining<DepositOnBalanceCommandHandler>());
+
+            services.AddMediatR(cfg => cfg
+           .RegisterServicesFromAssemblyContaining<BidPlacingCommandHandler>());
 
             return services;
         }

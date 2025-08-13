@@ -1,0 +1,13 @@
+<app-header></app-header>
+<div class="user">
+    <div class="card">
+        <img class="avatar" src="{{user.getUserPicture()}}">
+        <h2 class="title">{{user.getUserName()}}</h2>
+        <p class="subtitle">Рискуй и побеждай</p>
+        <div class="money">
+            <h3 class="amount">1.000.000.000 RUB.</h3>
+            <button class="add-button">+</button>
+        </div>
+    </div>
+    <app-lot-map class="lotMap"></app-lot-map>
+</div>

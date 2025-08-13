@@ -9,12 +9,17 @@
         </div>
     </div>
     <div *ngIf="getName()!=null" class="ifReg">
-        <div class="userInfo">
-            <h3 class="name" (click)="toggleMenu()">{{getName()}}</h3>
-            <img src={{getAvatar()}} class="avatar" (click)="toggleMenu()">
+        <div *ngIf="getUrl()!='/me'" class="ifNotMe">
+            <div class="userInfo">
+                <h3 class="name" (click)="toggleMenu()">{{getName()}}</h3>
+                <img src={{getAvatar()}} class="avatar" (click)="toggleMenu()">
+            </div>
+            <div class="menu" *ngIf="menu">
+                <button class="click" (click) = "goTo('me')">Profile</button>
+                <button class="click" (click) = "logOut()">Exit</button>
+            </div>
         </div>
-        <div class="menu" *ngIf="menu">
-            <button class="click" (click) = "goTo('user')">Profile</button>
+        <div class="ifMe" *ngIf="getUrl()=='/me'">
             <button class="click" (click) = "logOut()">Exit</button>
         </div>
     </div>

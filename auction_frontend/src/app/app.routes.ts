@@ -4,7 +4,7 @@ import { Register } from './register/register';
 import { Login } from './login/login';
 import { Lot } from './lot/lot';
 import { Bet } from './bet/bet';
-import { User } from './user/user';
+import { UserPage } from './user-page/user-page';
 
 export const routes: Routes = [
     {path: '',component:Main},
@@ -12,5 +12,5 @@ export const routes: Routes = [
     {path: 'login', component: Login},
     {path: 'lot', component:Lot},
     {path: 'test', component:Bet},
-    {path: 'user', component: User}
+    {path: 'me', component:UserPage}
 ];

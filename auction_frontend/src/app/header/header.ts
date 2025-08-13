@@ -19,6 +19,7 @@ export class Header {
   logOut(){
     this.user.picture = null;
     this.user.name = null;
+    this.goTo('login');
   }
   getName(){
     return this.user.name;
@@ -34,7 +35,17 @@ export class Header {
   }
 
   goTo(path: string){
-    this.router.navigate([path]);
+    if(path==='me'){
+      if(this.user.name===null){
+        this.router.navigate(['login'])
+      }
+      else{
+        this.router.navigate([path]);
+      }
+    }
+    else{
+      this.router.navigate([path]);
+    }
   }
 }
 

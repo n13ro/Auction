@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class init_db_model : Migration
+    public partial class create_bid_in_lot : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -56,10 +56,13 @@ namespace Infrastructure.Migrations
                 name: "Bids",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Amount = table.Column<long>(type: "bigint", nullable: false),
                     PlacedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false),
+                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    LotId = table.Column<int>(type: "integer", nullable: false),
                     CreateAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdateAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
@@ -67,8 +70,14 @@ namespace Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Bids", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Bids_Users_Id",
-                        column: x => x.Id,
+                        name: "FK_Bids_Lots_LotId",
+                        column: x => x.LotId,
+                        principalTable: "Lots",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Bids_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -98,62 +107,14 @@ namespace Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "BidsLots",
-                columns: table => new
-                {
-                    BidsId = table.Column<int>(type: "integer", nullable: false),
-                    LotId = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BidsLots", x => new { x.BidsId, x.LotId });
-                    table.ForeignKey(
-                        name: "FK_BidsLots_Bids_BidsId",
-                        column: x => x.BidsId,
-                        principalTable: "Bids",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_BidsLots_Lots_LotId",
-                        column: x => x.LotId,
-                        principalTable: "Lots",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "BidsUsers",
-                columns: table => new
-                {
-                    BidsId = table.Column<int>(type: "integer", nullable: false),
-                    UserId = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BidsUsers", x => new { x.BidsId, x.UserId });
-                    table.ForeignKey(
-                        name: "FK_BidsUsers_Bids_BidsId",
-                        column: x => x.BidsId,
-                        principalTable: "Bids",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_BidsUsers_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
-                name: "IX_BidsLots_LotId",
-                table: "BidsLots",
+                name: "IX_Bids_LotId",
+                table: "Bids",
                 column: "LotId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BidsUsers_UserId",
-                table: "BidsUsers",
+                name: "IX_Bids_UserId",
+                table: "Bids",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -166,16 +127,10 @@ namespace Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "BidsLots");
-
-            migrationBuilder.DropTable(
-                name: "BidsUsers");
+                name: "Bids");
 
             migrationBuilder.DropTable(
                 name: "LotsUsers");
-
-            migrationBuilder.DropTable(
-                name: "Bids");
 
             migrationBuilder.DropTable(
                 name: "Lots");

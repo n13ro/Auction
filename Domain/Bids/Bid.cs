@@ -10,6 +10,10 @@ namespace Domain.Bids
         public DateTime PlacedAt { get; private set; }
         public BidStatus Status { get; private set; }
 
+        public int UserId { get; private set; }
+        public User User { get; private set; }
+        public int LotId { get; private set; }
+        public Lot Lot { get; private set; }
 
         private Bid() { }
 
@@ -17,6 +21,17 @@ namespace Domain.Bids
         {
             Amount = amount;
             PlacedAt = DateTime.UtcNow;
+            SetUpdate();
+        }
+
+        public void SetUserId(int id)
+        {
+            UserId = id;
+            SetUpdate();
+        }
+        public void SetLotId(int id)
+        {
+            LotId = id;
             SetUpdate();
         }
 

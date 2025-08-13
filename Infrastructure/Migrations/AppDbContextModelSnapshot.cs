@@ -22,46 +22,22 @@ namespace Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("BidLot", b =>
-                {
-                    b.Property<int>("BidsId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("LotId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("BidsId", "LotId");
-
-                    b.HasIndex("LotId");
-
-                    b.ToTable("BidsLots", (string)null);
-                });
-
-            modelBuilder.Entity("BidUser", b =>
-                {
-                    b.Property<int>("BidsId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("BidsId", "UserId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("BidsUsers", (string)null);
-                });
-
             modelBuilder.Entity("Domain.Bids.Bid", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<long>("Amount")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("LotId")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("PlacedAt")
                         .HasColumnType("timestamp with time zone");
@@ -72,7 +48,14 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("UpdateAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("LotId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Bids");
                 });
@@ -171,43 +154,23 @@ namespace Infrastructure.Migrations
                     b.ToTable("LotsUsers", (string)null);
                 });
 
-            modelBuilder.Entity("BidLot", b =>
+            modelBuilder.Entity("Domain.Bids.Bid", b =>
                 {
-                    b.HasOne("Domain.Bids.Bid", null)
-                        .WithMany()
-                        .HasForeignKey("BidsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Lots.Lot", null)
-                        .WithMany()
+                    b.HasOne("Domain.Lots.Lot", "Lot")
+                        .WithMany("Bids")
                         .HasForeignKey("LotId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
 
-            modelBuilder.Entity("BidUser", b =>
-                {
-                    b.HasOne("Domain.Bids.Bid", null)
-                        .WithMany()
-                        .HasForeignKey("BidsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Users.User", null)
-                        .WithMany()
+                    b.HasOne("Domain.Users.User", "User")
+                        .WithMany("Bids")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
 
-            modelBuilder.Entity("Domain.Bids.Bid", b =>
-                {
-                    b.HasOne("Domain.Users.User", null)
-                        .WithMany()
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Lot");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("LotUser", b =>
@@ -223,6 +186,16 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Lots.Lot", b =>
+                {
+                    b.Navigation("Bids");
+                });
+
+            modelBuilder.Entity("Domain.Users.User", b =>
+                {
+                    b.Navigation("Bids");
                 });
 #pragma warning restore 612, 618
         }

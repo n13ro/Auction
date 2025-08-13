@@ -11,7 +11,7 @@ namespace Infrastructure
 {
     public static class Extensions
     {
-        public static IServiceCollection AddInfrastructure(this IServiceCollection services) //IConfiguration configuration)
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services)
         {
             services.AddDbContext<AppDbContext>(options =>
                 options.UseNpgsql("Host=localhost;Port=5432;Database=Auction;Username=postgres;Password=12345")

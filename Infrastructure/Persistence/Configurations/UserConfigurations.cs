@@ -14,9 +14,6 @@ namespace Infrastructure.Persistence.Configurations
                 .WithMany()
                 .UsingEntity(j => j.ToTable("LotsUsers"));
 
-            builder.HasMany(u => u.Bids)
-                .WithMany()
-                .UsingEntity(j => j.ToTable("BidsUsers"));
 
         }
     }

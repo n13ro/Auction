@@ -55,13 +55,6 @@ namespace Infrastructure.Persistence.Repositores.Users
 
         }
 
-
-        public async Task<bool> CanUserBidOnLotAsync(User user, Lot lot, long amount)
-        {
-            return user.Balance >= amount && lot.IsActive;
-        }
-
-
         public async Task<User> GetByEmailUserAsync(string email)
         {
             var user = await _ctx.Users.FirstOrDefaultAsync(u => u.Email == email);
@@ -91,6 +84,9 @@ namespace Infrastructure.Persistence.Repositores.Users
                 .FirstOrDefaultAsync();
 
             var nextBid = new Bid(amount);
+            nextBid.SetUserId(userId);
+            nextBid.SetLotId(userId);
+
             nextBid.MarkAsWinning();
 
             lot?.AddBid(nextBid);

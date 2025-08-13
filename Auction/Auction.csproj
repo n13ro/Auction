@@ -23,7 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\BidsController\" />
     <Folder Include="Controllers\LotsController\" />
   </ItemGroup>
 

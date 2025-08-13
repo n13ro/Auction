@@ -15,18 +15,18 @@ namespace Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Bid> builder)
         {
-            builder.HasOne<User>()
-                .WithMany()
-                .HasForeignKey(u => u.Id);
+            builder.HasOne(k => k.User)
+                .WithMany(k => k.Bids)
+                .HasForeignKey(k => k.UserId);
 
-            builder.HasOne<Lot>()
-                .WithMany()
-                .HasForeignKey(l => l.LotId);
+            builder.HasOne(k => k.Lot)
+                .WithMany(k => k.Bids)
+                .HasForeignKey(k => k.LotId);
+
 
             builder.Property(b => b.Amount)
                 .IsRequired();
 
-            builder.Property(b => b.CreatedAt)
         }
     }
 }

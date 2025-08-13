@@ -15,9 +15,9 @@ namespace Infrastructure.Persistence.Configurations
         public void Configure(EntityTypeBuilder<Lot> builder)
         {
 
-            builder.HasMany(k => k.Bids)
-                .WithMany()
-                .UsingEntity(j => j.ToTable("BidsLots"));
+            //builder.HasMany(k => k.Bids)
+            //    .WithMany()
+            //    .UsingEntity(j => j.ToTable("BidsLots"));
         }
     }
 }

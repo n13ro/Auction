@@ -70,7 +70,7 @@ namespace Domain.Lots
 
         }
 
-        internal void AddBid(Bid bid)
+        public void AddBid(Bid bid)
         {
             _bids.Add( bid );
         }

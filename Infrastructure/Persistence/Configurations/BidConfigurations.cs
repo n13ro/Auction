@@ -19,7 +19,14 @@ namespace Infrastructure.Persistence.Configurations
                 .WithMany()
                 .HasForeignKey(u => u.Id);
 
-            
+            builder.HasOne<Lot>()
+                .WithMany()
+                .HasForeignKey(l => l.LotId);
+
+            builder.Property(b => b.Amount)
+                .IsRequired();
+
+            builder.Property(b => b.CreatedAt)
         }
     }
 }

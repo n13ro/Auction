@@ -62,39 +62,6 @@ namespace Infrastructure.Persistence.Repositores.Users
         }
 
 
-        public async Task PlaceBidAsync(User user, Lot lot, long amount)
-        {
-            if (!await CanUserBidOnLotAsync(user, lot, amount))
-            {
-                throw new Exception("Cannot place bid");
-            }
-            user.Withdraw(amount);
-
-            var bid = new Bid(amount);
-            
-            lot.Bids.Add(bid);
-            lot.ExtendTime();
-
-            await _ctx.Bids.AddAsync(bid);
-
-            user.UpdateToLastModified();
-            await _ctx.SaveChangesAsync();
-        }
-
-
-        public async Task WithdrawWonBidsAsync(User user, Lot lot)
-        {
-            if(lot.Status != Lot.LotStatus.Active && lot.Bids.Any())
-            {
-                var winBid = lot.Bids.OrderByDescending(k => k.Amount)
-                    .FirstOrDefault();
-
-                user.Withdraw(winBid.Amount);
-                await _ctx.SaveChangesAsync();
-            }
-
-        }
-
         public async Task<User> GetByEmailUserAsync(string email)
         {
             var user = await _ctx.Users.FirstOrDefaultAsync(u => u.Email == email);
@@ -106,6 +73,43 @@ namespace Infrastructure.Persistence.Repositores.Users
             var user = await _ctx.Users.FindAsync(id);
             user?.Deposit(amount);
             await _ctx.SaveChangesAsync();
+        }
+
+        public async Task PlaceBidAsync(int userId, int lotId, long amount)
+        {
+            //user by id
+            var user = await _ctx.Users.FindAsync(userId);
+
+            //all lots and all bids in this lot
+            var lot = await _ctx.Lots
+                .Include(lot => lot.Bids)
+                .SingleOrDefaultAsync(k => k.Id == lotId);
+
+            //last bid by amount
+            var last = await _ctx.Bids
+                .OrderByDescending(b => b.Amount)
+                .FirstOrDefaultAsync();
+
+            var nextBid = new Bid(amount);
+            nextBid.MarkAsWinning();
+
+            lot?.AddBid(nextBid);
+            lot?.ExtendTime();
+
+            user?.Withdraw(amount);
+
+            await _ctx.Bids.AddAsync(nextBid);
+            await _ctx.SaveChangesAsync();
+        }
+
+        public Task<bool> CanUserBidOnLotAsync(int userId, int lotId, long amount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task WithdrawWonBidsAsync(int userId, int lotId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

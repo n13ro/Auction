@@ -1,1 +1,7 @@
-<p>carousel works!</p>
+<div class="carousel">
+    <div class="carousel-images" [style.transform]="'translateX(' + (-currentIndex * 100) + '%)'">
+        <img *ngFor="let image of images" [src]="image">
+    </div>
+    <img src="./images/arrow_left.svg" class="prev btn" (click)="moveSlide(-1)">
+    <img src="./images/arrow_right.svg" class="next btn" (click)="moveSlide(1)">
+</div>

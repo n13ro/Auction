@@ -1,0 +1,34 @@
+.carousel {
+    width: 1200px;
+    height: auto;
+    position: relative;
+    margin: auto;
+    overflow: hidden;
+    border-radius: 20px;
+}
+
+.carousel-images {
+    display: flex;
+}
+
+.carousel-images img {
+    min-width: 100%;
+    display: block;
+}
+
+.btn {
+    position: absolute;
+    top: 50%;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    font-size: 18px;
+}
+
+.prev {
+    left: 10px;
+}
+
+.next {
+    right: 10px;
+}

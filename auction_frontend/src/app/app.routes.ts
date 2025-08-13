@@ -5,6 +5,7 @@ import { Login } from './login/login';
 import { Lot } from './lot/lot';
 import { Bet } from './bet/bet';
 import { UserPage } from './user-page/user-page';
+import { Carousel } from './carousel/carousel';
 
 export const routes: Routes = [
     {path: '',component:Main},
@@ -12,5 +13,6 @@ export const routes: Routes = [
     {path: 'login', component: Login},
     {path: 'lot', component:Lot},
     {path: 'test', component:Bet},
-    {path: 'me', component:UserPage}
+    {path: 'me', component:UserPage},
+    {path: 'car', component:Carousel},
 ];

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Header } from '../header/header';
 import { Bet } from '../bet/bet';
 import { NgIf } from '@angular/common';
+import { Carousel } from '../carousel/carousel';
 interface bet{
     name:string;
     date:string;
@@ -9,7 +10,7 @@ interface bet{
   }
 @Component({
   selector: 'app-lot',
-  imports: [Header, Bet, NgIf],
+  imports: [Header,Carousel, Bet, NgIf],
   templateUrl: './lot.html',
   styleUrl: './lot.scss'
 })

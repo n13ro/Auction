@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { NgClass, NgFor } from '@angular/common';
+import { NgClass, NgFor, NgIf } from '@angular/common';
 import { Router } from '@angular/router';
+import { CreateLot } from '../create-lot/create-lot';
 
 @Component({
   selector: 'app-lot-map',
-  imports: [NgFor, NgClass], 
+  imports: [NgFor, NgClass, CreateLot, NgIf], 
   templateUrl: './lot-map.html',
   styleUrl: './lot-map.scss'
 })
@@ -23,7 +24,9 @@ export class LotMap {
     price: this.price,
     image: this.image
   }));
-
+  getUrl(){
+    return this.router.url;
+  }
   getName(index: number): string {
     return this.arr[index].name;
   }

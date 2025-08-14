@@ -1,5 +1,4 @@
 <div class="header">
-    <p class="logo">PASCALL</p>
     <div *ngIf="getName()==null" class="ifNotReg">
         <div class="register" *ngIf="getUrl()=='/login'">
             <button (click)="goTo('register')" class="click">REGISTER</button>
@@ -23,6 +22,7 @@
             <button class="click" (click) = "logOut()">Exit</button>
         </div>
     </div>
+    <p class="logo">PASCALL</p>
     <div class="search" *ngIf="getUrl()=='/'">
         <img src='images/search.svg'>
         <input class="searchLine">

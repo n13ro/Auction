@@ -1,3 +1,4 @@
+<app-create-lot style="::-webkit-scrollbar{display:none}" *ngIf="getUrl()=='/me'"></app-create-lot>
 <div *ngFor="let a of arr; let i = index" class="lot-map">
     <div  [ngClass]="i%2===0 ? 'black' : 'yellow' ">
         <div class="card">

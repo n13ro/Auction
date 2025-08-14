@@ -1,17 +1,21 @@
 
 .menu{
-    margin-left: 30%;
-    margin-right: 30%;
-    margin-bottom: 30px;
     display: flex;
-    justify-content: space-between;
+    align-self: center;
+    justify-content:center;
     gap: 30px;
 }
+.main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.header{
+    align-self: normal;
+}
 .map{
-    max-width: 1800px;
-    padding-left: 7%;
-    padding-right: 7%;
-    padding-top: 70px;
+    padding-top: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -22,5 +26,7 @@ img{
     cursor: pointer;
     position: absolute;
     left: 50%;
-    top: 100px
+    top: 100px;
+    justify-content:center;
+    transform: translate(-50%, -50%);
 }

@@ -1,0 +1,36 @@
+<div (click)="showCreate()" class="create">
+    <img src="./images/plus.svg" class="plus">
+</div>
+<div class="create-lot" *ngIf="create">
+    <img (click)="closeCreate()" src="./images/close.svg" class="return">
+    <p class="title">PASCALL</p>
+    <div class="input-group">
+        <label class="label" for="object">Предмет</label>
+        <input type="text" id="object" placeholder="Название прпедмета" />
+    </div>
+    <div class="input-group">
+        <label class="label" for="account">Начальная цена</label>
+        <input type="text" id="account" placeholder="Сумма" />
+    </div>
+    <div class="input-group">
+        <label class="label" for="min">Мин. повышение</label>
+        <input type="text" id="min" placeholder="Сумма" />
+    </div>
+    <div class="input-group">
+        <label class="label" for="description">Описание</label>
+        <input type="text" id="description" placeholder="1.000.000.000 RUB" />
+    </div>
+    <label class="label" for="photos">Фото</label>
+    <div class="photos">
+        <div class="photo">
+        <img src="./images/plus.svg" class="plus mini">
+        </div>
+        <div class="photo">
+        <img src="./images/plus.svg" class="plus mini">
+        </div>
+        <div class="photo">
+        <img src="./images/plus.svg" class="plus mini">
+        </div>
+    </div>
+    <button>Создать лот</button>
+</div>

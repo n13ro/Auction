@@ -1,0 +1,104 @@
+.create{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+    height: 320px;
+    background-color: #000;
+    border: 1px solid #fff;
+    border-radius: 10px;
+    margin-right: 30px;
+    margin-bottom: -30px;
+}
+
+.create-lot{
+    border: #fff 1px solid;
+    position: absolute; /* Устанавливаем абсолютное позиционирование */
+    top: 50%; /* Сдвигаем элемент вниз на 50% от высоты родителя */
+    left: 50%; /* Сдвигаем элемент вправо на 50% от ширины родителя */
+    transform: translate(-50%, -50%);
+    height: 650px;
+    background-color: #000;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    z-index: 999;
+}
+label{
+    color: #fff;
+    margin-left: 7%;
+}
+label[for="photos"]{
+    margin-left: 55px;
+}
+.return{
+    position: absolute;
+    left: 5%;
+    top: 4%;
+}
+.title{
+    font-size: large;
+    color: orangered;
+    align-self: center;
+}
+.input-group {
+    display: flex;
+    margin-top: 20px;
+    flex-direction: column;
+    align-items: start;
+    margin-bottom: 20px;
+}
+input[type="text"] {
+  width: 80%;
+  padding: 10px 15px;
+  margin-left: 5%;
+  background-color: #333;
+  border: 1px solid #555;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+input[type="text"]:focus {
+  border-color: #fff;
+}
+
+.photos{
+    display: flex;
+    margin-bottom: 10px;
+    margin-left: 50px;
+    margin-right: 50px;
+    gap: 30px;
+}
+.photo{
+    border: 1px solid #fff;
+    border-radius: 5px;
+    height:100px;
+    width: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.mini{
+    width: 40px;
+    height: auto;
+}
+button {
+    margin-left: 50px;
+  width: 76%;
+  padding: 14px;
+  background-color: #fff;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.2s;
+}
+
+button:hover {
+  background-color: #ddd;
+}

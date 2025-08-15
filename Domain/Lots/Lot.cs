@@ -6,13 +6,25 @@ namespace Domain.Lots
 {
     public class Lot : BaseEntity
     {
-
+        [Range(4, 20, ErrorMessage = "Invalid NameLot length")]
+        [Required]
         public string Name { get; private set; }
+
+        [Range(4, 20, ErrorMessage = "Invalid Description Lot length")]
+        [Required]
         public string Description { get; private set; }
+
+        [Range(1000, 100_000_000_000_000, ErrorMessage = "Invalid Starting price ")]
+        [Required]
         public long StartingPrice { get; private set; }
+
+        [Range(100, 100_000_000, ErrorMessage = "Invalid Min bet price ")]
+        [Required]
         public long MinBet { get; private set; }
         public DateTime StartTime { get; private set; }
         public DateTime EndTime { get; private set; }
+
+        [Required]
         public bool IsExtraTime { get; private set; }
         public LotStatus Status { get; private set; } = LotStatus.Active;
 
@@ -48,6 +60,10 @@ namespace Domain.Lots
             {
                 EndTime = EndTime.Add(TimeSpan.FromMinutes(2));
                 SetUpdate();
+            }
+            else
+            {
+                throw new InvalidOperationException("Invalid adding time operation");
             }
         }
 

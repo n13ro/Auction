@@ -9,9 +9,15 @@ namespace Domain.Users
     public class User : BaseEntity
     {
         [Range(4, 20, ErrorMessage = "Invalid NickName length")]
+        [Required]
         public string NickName { get; private set; }
+
         [Range(4, 20, ErrorMessage = "Invalid Email length")]
+        [Required]
         public string Email { get; private set; }
+
+        [Range(4, 20, ErrorMessage = "Invalid Password length")]
+        [Required]
         public string Password { get; private set; }
         public long Balance { get; private set; }
 
@@ -52,8 +58,15 @@ namespace Domain.Users
 
         public void Deposit(long amount)
         {
-            Balance += amount;
-            SetUpdate();
+            if (amount > 0 && amount <= 100_000)
+            {
+                Balance += amount;
+                SetUpdate();
+            }
+            else
+            {
+                throw new Exception("Amount < 0 or > 100.000");
+            }
         }
 
         public void ReturnMoney(long amount)
@@ -64,11 +77,18 @@ namespace Domain.Users
 
         public void Withdraw(long amount)
         {
-            Balance -= amount;
-            SetUpdate();
+            if (CheckBalance(amount))
+            {
+                Balance -= amount;
+                SetUpdate();
+            }
+            else 
+            {
+                throw new Exception("Not enough money");
+            }
         }
 
-        public bool CheckBalanceBidOnLot(long amount)
+        public bool CheckBalance(long amount)
         {
             return Balance >= amount;
         }

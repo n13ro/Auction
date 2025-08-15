@@ -39,6 +39,7 @@ namespace Infrastructure.Background
                     lot.CloseLot();
                     _logger.LogInformation($"lot close - {lot}");
                 }
+
                 await ctx.SaveChangesAsync();
                 _logger.LogInformation($"Save Changes");
                 await Task.Delay(_period, stoppingToken);

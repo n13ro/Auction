@@ -55,6 +55,13 @@ namespace Infrastructure.Persistence.Repositores.Users
 
         }
 
+
+        public async Task<bool> CanUserBidOnLotAsync(User user, Lot lot, long amount)
+        {
+            return user.Balance >= amount && lot.IsActive;
+        }
+
+
         public async Task<User> GetByEmailUserAsync(string email)
         {
             var user = await _ctx.Users.FirstOrDefaultAsync(u => u.Email == email);
@@ -77,25 +84,34 @@ namespace Infrastructure.Persistence.Repositores.Users
             var lot = await _ctx.Lots
                 .Include(lot => lot.Bids)
                 .SingleOrDefaultAsync(k => k.Id == lotId);
-
             //last bid by amount
             var last = await _ctx.Bids
                 .OrderByDescending(b => b.Amount)
                 .FirstOrDefaultAsync();
 
-            var nextBid = new Bid(amount);
-            nextBid.SetUserId(userId);
-            nextBid.SetLotId(userId);
+            if( user != null && lot != null)
+            {
+                if(amount <= user.Balance && (last?.Amount == null || amount > last.Amount))
+                {
+                    //user.Withdraw(amount);
+                    var nextBid = new Bid(amount);
+                    nextBid.SetUserId(userId);
+                    nextBid.SetLotId(lotId);
+                    nextBid.MarkAsWinning();
 
-            nextBid.MarkAsWinning();
+                    lot?.AddBid(nextBid);
+                    lot?.ExtendTime();
 
-            lot?.AddBid(nextBid);
-            lot?.ExtendTime();
 
-            user?.Withdraw(amount);
+                    await _ctx.Bids.AddAsync(nextBid);
+                    await _ctx.SaveChangesAsync();
 
-            await _ctx.Bids.AddAsync(nextBid);
-            await _ctx.SaveChangesAsync();
+                }
+
+            }
+
+
+
         }
 
         public Task<bool> CanUserBidOnLotAsync(int userId, int lotId, long amount)

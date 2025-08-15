@@ -1,12 +1,15 @@
 ﻿using Domain.Core;
 using Domain.Lots;
 using Domain.Users;
+using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Bids
 {
     public class Bid : BaseEntity
     {
+        [Required]
         public long Amount { get; private set; }
+
         public DateTime PlacedAt { get; private set; }
         public BidStatus Status { get; private set; }
 

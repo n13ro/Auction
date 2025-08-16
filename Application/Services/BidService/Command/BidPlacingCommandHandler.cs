@@ -1,20 +1,21 @@
 ﻿using Infrastructure.Persistence.Repositores.Users;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Services.BidService.Command
 {
+    /// <summary>
+    /// Тело запроса ставки в лоте
+    /// </summary>
     public class BidPlacingCommand : IRequest
     { 
         public int userId { get; set; }
         public int lotId { get; set; }
         public long amount { get; set; }
-    } 
+    }
 
+    /// <summary>
+    /// Обработчик запроса создания ствки в лоте
+    /// </summary>
     public class BidPlacingCommandHandler : IRequestHandler<BidPlacingCommand>
     {
         private readonly IUserRepository _userRepository;

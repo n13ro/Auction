@@ -13,6 +13,10 @@ namespace Domain.Bids
         public DateTime PlacedAt { get; private set; }
         public BidStatus Status { get; private set; }
 
+
+        /// <summary>
+        /// Поля для связи с другими таблицами
+        /// </summary>
         public int UserId { get; private set; }
         public User User { get; private set; }
         public int LotId { get; private set; }
@@ -49,6 +53,10 @@ namespace Domain.Bids
             Status = BidStatus.Losing;
             SetUpdate();
         }
+
+        /// <summary>
+        /// Лишнее?
+        /// </summary>
         public void Cancel()
         {
             Status = BidStatus.Cancelled;

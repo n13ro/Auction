@@ -6,6 +6,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Users
 {
+    /// <summary>
+    /// Модель пользователя
+    /// </summary>
     public class User : BaseEntity
     {
         [Range(4, 20, ErrorMessage = "Invalid NickName length")]
@@ -99,11 +102,19 @@ namespace Domain.Users
             SetUpdate();
         }
 
+        /// <summary>
+        /// Лишнее?
+        /// </summary>
+        /// <param name="lotId"></param>
+        /// <returns></returns>
         public Lot? GetLot(int lotId)
         {
             return _lots.FirstOrDefault(l => l.Id == lotId);
         }
 
+        /// <summary>
+        /// Метод для внешнего использования
+        /// </summary>
         public void UpdateToLastModified()
         {
             SetUpdate();

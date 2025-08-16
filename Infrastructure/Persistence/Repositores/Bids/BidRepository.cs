@@ -10,8 +10,24 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Persistence.Repositores.Bids
 {
+    /// <summary>
+    /// Интерфейс методов действий СТАВКИ
+    /// </summary>
+    public interface IBidRepository
+    {
+        Task<Bid> CreateBidAsync(long amount);
+        Task MarkAsWinningAsync(Bid bid);
+        Task MarkAsLosingAsync(Bid bid);
+    }
+
+    /// <summary>
+    /// Реализация метовов интерфейса действий СТАВКИ
+    /// </summary>
     public class BidRepository : IBidRepository
     {
+        /// <summary>
+        /// Инициализация контекста
+        /// </summary>
         private readonly AppDbContext _ctx;
 
         public BidRepository(AppDbContext ctx)

@@ -6,17 +6,25 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Application
 {
+    /// <summary>
+    /// Подключение Приложения(Application)
+    /// </summary>
     public static class Extensions
     {
         public static IServiceCollection AddApplication
             (this IServiceCollection services) 
         {
-            
+            /// <summary>
+            /// Обработчики Auth
+            /// </summary>
             #region AuthCommands
             services.AddMediatR(cfg => cfg
             .RegisterServicesFromAssemblyContaining<LoginCommandHandler>());
             #endregion
 
+            /// <summary>
+            /// Обработчики пользователя
+            /// </summary>
             #region UserCommands
             services.AddMediatR(cfg => cfg
             .RegisterServicesFromAssemblyContaining<CreateUserCommandHandler>());
@@ -28,11 +36,17 @@ namespace Application
             .RegisterServicesFromAssemblyContaining<CloseLotCommandHandler>());
             #endregion
 
+            /// <summary>
+            /// Обработчики лота
+            /// </summary>
             #region LotCommands
             services.AddMediatR(cfg => cfg
             .RegisterServicesFromAssemblyContaining<CreateLotCommandHandler>());
             #endregion
 
+            /// <summary>
+            /// Обработчики ставки
+            /// </summary>
             #region BidCommands
             services.AddMediatR(cfg => cfg
             .RegisterServicesFromAssemblyContaining<BidPlacingCommandHandler>());

@@ -4,13 +4,18 @@ using MediatR;
 
 namespace Application.Services.UserService.Command
 {
+    /// <summary>
+    /// Тело запроса пополнение счета
+    /// </summary>
     public class DepositOnBalanceCommand : IRequest
     {
         public int Id { get; set; }
         public long Amount {  get; set; }
     }
 
-
+    /// <summary>
+    /// Обработчик запроса на пополнение счета
+    /// </summary>
     public class DepositOnBalanceCommandHandler : IRequestHandler<DepositOnBalanceCommand>
     {
         private readonly IUserRepository _userRepository;

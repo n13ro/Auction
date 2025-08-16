@@ -10,6 +10,9 @@ using static Domain.Lots.Lot;
 
 namespace Infrastructure.Background
 {
+    /// <summary>
+    /// Фоновый сервис снятия денег только у победителей
+    /// </summary>
     public class WithdrawWonBid : BackgroundService
     {
         private readonly IServiceScopeFactory _serviceScope;

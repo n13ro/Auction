@@ -11,6 +11,9 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Persistence.Configurations
 {
+    /// <summary>
+    /// Свзяи СТАВОК
+    /// </summary>
     public class BidConfigurations : IEntityTypeConfiguration<Bid>
     {
         public void Configure(EntityTypeBuilder<Bid> builder)

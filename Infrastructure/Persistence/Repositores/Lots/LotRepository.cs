@@ -10,8 +10,27 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Persistence.Repositores.Lots
 {
+    /// <summary>
+    /// Интерфейс методов действий ЛОТА
+    /// </summary>
+    public interface ILotRepository
+    {
+        Task<Lot> CreateLotAsync(int userId, string name,
+            string description, long startingPrice,
+           long minBet, bool isExtraTime, double lotLife);
+
+        Task CloseLotAsync(Lot lot);
+        Task CloseLotByUserAsync(Lot lot);
+    }
+
+    /// <summary>
+    /// Реализация метовов интерфейса действий ЛОТА
+    /// </summary>
     public class LotRepository : ILotRepository
     {
+        /// <summary>
+        /// Инициализация контекста
+        /// </summary>
         private readonly AppDbContext _ctx;
 
         public LotRepository(AppDbContext ctx)

@@ -16,6 +16,17 @@
 # Mono auto generated files
 mono_crash.*
 
+
+# .env files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Keep example file
+!.env.example
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/

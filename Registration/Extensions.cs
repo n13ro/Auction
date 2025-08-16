@@ -11,11 +11,14 @@ using System.Threading.Tasks;
 
 namespace Registration
 {
+    /// <summary>
+    /// Подключение Auth jwt
+    /// </summary>
     public static class Extensions
     {
         public static IServiceCollection AddAuthCustom(this IServiceCollection services, IConfiguration cfg)
         {
-            var keyBytes = Encoding.UTF8.GetBytes(cfg["Jwt:Key"]);
+            var keyBytes = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("Jwt__Key"));
 
             services.AddAuthentication(o =>
             {
@@ -31,13 +34,14 @@ namespace Registration
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer = cfg["Jwt:Issuer"],
-                    ValidAudience = cfg["Jwt:Audience"],
+                    ValidIssuer = Environment.GetEnvironmentVariable("Jwt__Issuer"),
+                    ValidAudience = Environment.GetEnvironmentVariable("Jwt__Audience"),
                     IssuerSigningKey = new SymmetricSecurityKey(keyBytes)
                 };
             });
 
             services.AddScoped<IJWTService, JWTService>();
+
             return services;
         }
     }

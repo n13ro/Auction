@@ -5,6 +5,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Persistence.Configurations
 {
+    /// <summary>
+    /// Связи ПОЛЬЗОВАТЕЛЕЙ
+    /// </summary>
     public class UserConfigurations : IEntityTypeConfiguration<User>
     {
         public void Configure(EntityTypeBuilder<User> builder)

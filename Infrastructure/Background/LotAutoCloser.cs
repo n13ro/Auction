@@ -8,6 +8,10 @@ using static Domain.Lots.Lot;
 
 namespace Infrastructure.Background
 {
+
+    /// <summary>
+    /// Фоновый сервис проверки жизни лота
+    /// </summary>
     public class LotAutoCloser : BackgroundService
     {
         private readonly IServiceScopeFactory _serviceScope;
@@ -32,7 +36,9 @@ namespace Infrastructure.Background
 
                 var nowDate = DateTime.UtcNow;
 
-                var Lots = await ctx.Lots.Where(k => k.Status == LotStatus.Active && k.EndTime <= nowDate).ToListAsync();
+                var Lots = await ctx.Lots
+                    .Where(k => k.Status == LotStatus.Active && k.EndTime <= nowDate)
+                    .ToListAsync();
 
                 foreach (var lot in Lots)
                 {

@@ -4,6 +4,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Lots
 {
+    /// <summary>
+    /// Модель лота
+    /// </summary>
     public class Lot : BaseEntity
     {
         [Range(4, 20, ErrorMessage = "Invalid NameLot length")]
@@ -24,6 +27,10 @@ namespace Domain.Lots
         public DateTime StartTime { get; private set; }
         public DateTime EndTime { get; private set; }
 
+        /// <summary>
+        /// будет ли добавляться +2мин. после новой ставки?
+        /// IsExtraTime: true
+        /// </summary>
         [Required]
         public bool IsExtraTime { get; private set; }
         public LotStatus Status { get; private set; } = LotStatus.Active;
@@ -47,13 +54,18 @@ namespace Domain.Lots
             SetUpdate();
         }
 
-        //time?
+       /// <summary>
+       /// Активное ли время или нет?
+       /// </summary>
         public bool IsActive =>
             Status == LotStatus.Active &&
             DateTime.UtcNow >= StartTime &&
             DateTime.UtcNow <= EndTime;
-        //
 
+        /// <summary>
+        /// Добавляем две минуты если стоит true
+        /// </summary>
+        /// <exception cref="InvalidOperationException"></exception>
         public void ExtendTime()
         {
             if (IsExtraTime)
@@ -67,6 +79,9 @@ namespace Domain.Lots
             }
         }
 
+        /// <summary>
+        /// Отменяем/закрываем лот руками
+        /// </summary>
         public void CloseLotByUser()
         {
             if (IsActive)
@@ -76,6 +91,9 @@ namespace Domain.Lots
             }
         }
 
+        /// <summary>
+        /// Закрываем лот по завершению времени
+        /// </summary>
         public void CloseLot()
         {
             if (!IsActive)
@@ -86,6 +104,10 @@ namespace Domain.Lots
 
         }
 
+        /// <summary>
+        /// Добавление ставки в конкретный лот при успехе
+        /// </summary>
+        /// <param name="bid"></param>
         public void AddBid(Bid bid)
         {
             _bids.Add( bid );

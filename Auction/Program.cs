@@ -1,7 +1,9 @@
 using Application;
+using DotNetEnv;
 using Infrastructure;
-using Registration;
+using Microsoft.OpenApi;
 using Microsoft.OpenApi.Models;
+using Registration;
 
 namespace Auction
 {
@@ -9,6 +11,11 @@ namespace Auction
     {
         public static void Main(string[] args)
         {
+            /// <summary>
+            /// Loading variables from an .env file
+            /// </summary>
+            Env.Load();
+
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
@@ -22,38 +29,18 @@ namespace Auction
 
 
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen(k =>
+            builder.Services.AddSwaggerGen(options =>
             {
-                var securityScheme = new OpenApiSecurityScheme
+                options.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Name = "Auth",
-                    Description = "Custom auth",
-                    In = ParameterLocation.Header,
-                    Type = SecuritySchemeType.Http,
-                    Scheme = "bearer",
-                    BearerFormat = "JWT",
-                    Reference = new OpenApiReference
+                    Title = "Auction API",
+                    Version = "v0.0.6",
+                    Description = "API для управления аукционом",
+                    Contact = new OpenApiContact
                     {
-                        Type = ReferenceType.SecurityScheme,
-                        Id = "Bearer"
-                    }
-
-                };
-
-                k.AddSecurityDefinition("Bearer", securityScheme);
-                k.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference 
-                            {   
-                                Type = ReferenceType.SecurityScheme, 
-                                Id = "Bearer" 
-                            }
-                        },
-                        Array.Empty<string>()
-                    }
+                        Name = "Auza Team",
+                        Email = "auzateamind@gmail.com"
+                    },
                 });
             });
 
@@ -71,8 +58,10 @@ namespace Auction
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
-                app.UseSwagger();
+                app.UseSwagger(o => 
+                    o.OpenApiVersion = OpenApiSpecVersion.OpenApi2_0);
                 app.UseSwaggerUI();
+                
             }
 
             app.UseHttpsRedirection();

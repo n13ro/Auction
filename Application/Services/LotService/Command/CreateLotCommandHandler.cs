@@ -12,7 +12,9 @@ using static Domain.Lots.Lot;
 
 namespace Application.Services.LotService.Command
 {
-
+    /// <summary>
+    /// Тело запроса создания лота
+    /// </summary>
     public class CreateLotCommand : IRequest
     {
         public int userId { get; set; }
@@ -27,6 +29,10 @@ namespace Application.Services.LotService.Command
         public double LotLife { get; set; }
     }
 
+
+    /// <summary>
+    /// Обработчик запроса на создание лота
+    /// </summary>
     public class CreateLotCommandHandler : IRequestHandler<CreateLotCommand>
     {
         private readonly ILotRepository _lotRepostiry;

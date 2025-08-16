@@ -9,7 +9,9 @@ using System.Threading.Tasks;
 
 namespace Application.Services.UserService.Command
 {
-
+    /// <summary>
+    /// Тело запроса обновления данных
+    /// </summary>
     public class UpdateUserDataCommand : IRequest
     {
         public int Id { get; set; }
@@ -18,6 +20,9 @@ namespace Application.Services.UserService.Command
         public string Password { get; set; }
     }
 
+    /// <summary>
+    /// Обработчик запроса на обновление данных пользователя
+    /// </summary>
     public class UpdateDataUserCommandHandler : IRequestHandler<UpdateUserDataCommand>
     {
         private readonly IUserRepository _userRpository;

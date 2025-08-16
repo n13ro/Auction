@@ -3,6 +3,9 @@
 
 namespace Domain.Core
 {
+    /// <summary>
+    /// Базовая модель для наследования
+    /// </summary>
     public abstract class BaseEntity
     {
         [Key]
@@ -15,7 +18,9 @@ namespace Domain.Core
             CreateAt = DateTime.UtcNow;
             UpdateAt = DateTime.UtcNow;
         }
-
+        /// <summary>
+        /// Обновление данных при любых изменениях
+        /// </summary>
         protected void SetUpdate()
         {
             UpdateAt = DateTime.UtcNow;

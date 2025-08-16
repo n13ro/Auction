@@ -8,12 +8,18 @@ using System.Threading.Tasks;
 
 namespace Application.Services.LoginService
 {
+    /// <summary>
+    /// Тело запроса входа в аккаунт
+    /// </summary>
     public class LoginCommand : IRequest<(int Id, string Email, string NickName)>
     {
         public string Email { get; set; }
         public string Password { get; set; }
     }
 
+    /// <summary>
+    /// Обработчик запроса на вход в аккаунт
+    /// </summary>
     public class LoginCommandHandler : IRequestHandler<LoginCommand, (int Id, string Email, string NickName)>
     {
         private readonly IUserRepository _userRepository;

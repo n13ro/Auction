@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Persistence.Configurations
 {
+    /// <summary>
+    /// Связи ЛОТОВ
+    /// </summary>
     public class LotConfigurations : IEntityTypeConfiguration<Lot>
     {
         public void Configure(EntityTypeBuilder<Lot> builder)

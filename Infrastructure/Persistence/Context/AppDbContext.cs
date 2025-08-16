@@ -10,14 +10,24 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Persistence.Context
 {
+    /// <summary>
+    /// Контекст базы данных(бд)
+    /// </summary>
     public class AppDbContext : DbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> opt) : base(opt) { }
 
+        /// <summary>
+        /// Инициализация моделей
+        /// </summary>
         public DbSet<User> Users { get; set; }
         public DbSet<Lot> Lots { get; set; }
         public DbSet<Bid> Bids { get; set; }
 
+        /// <summary>
+        /// Подключение внешних связей через ApplyConfigurationsFromAssembly по контексту
+        /// </summary>
+        /// <param name="modelBuilder"></param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

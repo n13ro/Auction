@@ -5,6 +5,9 @@ using MediatR;
 
 namespace Application.Services.UserService.Command
 {
+    /// <summary>
+    /// Тело запроса создания пользователя
+    /// </summary>
     public class CreateUserCommand : IRequest
     {
 
@@ -13,6 +16,10 @@ namespace Application.Services.UserService.Command
         public string Email { get; set; }
         public string Password { get; set; }
     }
+
+    /// <summary>
+    /// Обработчик запроса на создание пользователя
+    /// </summary>
     public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand>
     {
         private readonly IUserRepository _userRpository;

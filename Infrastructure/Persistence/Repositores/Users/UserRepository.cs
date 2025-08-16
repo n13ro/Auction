@@ -1,5 +1,4 @@
 ﻿using Domain.Bids;
-using Domain.Lots;
 using Domain.Users;
 using Infrastructure.Persistence.Context;
 using Infrastructure.Persistence.Repositores.Users.DTOs;
@@ -7,8 +6,30 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Repositores.Users
 {
+    /// <summary>
+    /// Интерфейс методов действий ПОЛЬЗОВАТЕЛЯ
+    /// </summary>
+    public interface IUserRepository
+    {
+        Task CreateUserAsync(User user);
+        Task UpdateUserDataAsync(UpdateUserDataRequest req);
+        Task<User> GetByIdUserAsync(int id);
+        Task<User> GetByEmailUserAsync(string email);
+        Task PlaceBidAsync(int userId, int lotId, long amount);
+        Task DepositOnBalanceAsync(int id, long amount);
+        Task CloseLotAsync(int userId, int lotId);
+
+    }
+
+
+    /// <summary>
+    /// Реализация метовов интерфейса действий ПОЛЬЗОВАТЕЛЯ
+    /// </summary>
     public class UserRepository : IUserRepository
     {
+        /// <summary>
+        /// Инициализация контекста
+        /// </summary>
         private readonly AppDbContext _ctx;
 
         public UserRepository(AppDbContext ctx)
@@ -18,7 +39,6 @@ namespace Infrastructure.Persistence.Repositores.Users
         public async Task<User> GetByIdUserAsync(int id)
         {
             var byUser = await _ctx.Users.FindAsync(id);
-
             return byUser;
         }
 
@@ -49,12 +69,6 @@ namespace Infrastructure.Persistence.Repositores.Users
         }
 
 
-        public async Task<bool> CanUserBidOnLotAsync(User user, Lot lot, long amount)
-        {
-            return user.Balance >= amount && lot.IsActive;
-        }
-
-
         public async Task<User> GetByEmailUserAsync(string email)
         {
             var user = await _ctx.Users.FirstOrDefaultAsync(u => u.Email == email);
@@ -68,6 +82,14 @@ namespace Infrastructure.Persistence.Repositores.Users
             await _ctx.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Создание ставки как пользователь(кроме создателя)
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="lotId"></param>
+        /// <param name="amount"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task PlaceBidAsync(int userId, int lotId, long amount)
         {
             //user by id
@@ -84,6 +106,7 @@ namespace Infrastructure.Persistence.Repositores.Users
                 .OrderByDescending(b => b.Amount)
                 .FirstOrDefaultAsync();
 
+            //get id owner lot
             var ownerLot = await _ctx.Users
                 .Where(k => k.Id == userId)
                 .AnyAsync(k => k.Lots.Any(k=> k.Id == lotId));
@@ -92,7 +115,6 @@ namespace Infrastructure.Persistence.Repositores.Users
             {
                 if(amount <= user.Balance && (last?.Amount == null || amount > last.Amount))
                 {
-                    //user.Withdraw(amount);
                     var nextBid = new Bid(amount);
                     nextBid.SetUserId(userId);
                     nextBid.SetLotId(lotId);
@@ -121,12 +143,17 @@ namespace Infrastructure.Persistence.Repositores.Users
 
         }
 
-
+        /// <summary>
+        /// Закрытие лота руками как пользователь
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="lotId"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task CloseLotAsync(int userId, int lotId)
         {
             try
             {
-
                 var ownerLot = await _ctx.Users
                     .Where(k => k.Id == userId)
                     .AnyAsync(k => k.Lots.Any(k => k.Id == lotId));

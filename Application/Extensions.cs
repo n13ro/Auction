@@ -11,26 +11,33 @@ namespace Application
         public static IServiceCollection AddApplication
             (this IServiceCollection services) 
         {
+            
+            #region AuthCommands
+            services.AddMediatR(cfg => cfg
+            .RegisterServicesFromAssemblyContaining<LoginCommandHandler>());
+            #endregion
+
+            #region UserCommands
             services.AddMediatR(cfg => cfg
             .RegisterServicesFromAssemblyContaining<CreateUserCommandHandler>());
-
             services.AddMediatR(cfg => cfg
             .RegisterServicesFromAssemblyContaining<UpdateDataUserCommandHandler>());
-
             services.AddMediatR(cfg => cfg
-           .RegisterServicesFromAssemblyContaining<CreateLotCommandHandler>());
-
+            .RegisterServicesFromAssemblyContaining<DepositOnBalanceCommandHandler>());
             services.AddMediatR(cfg => cfg
-           .RegisterServicesFromAssemblyContaining<LoginCommandHandler>());
+            .RegisterServicesFromAssemblyContaining<CloseLotCommandHandler>());
+            #endregion
 
+            #region LotCommands
             services.AddMediatR(cfg => cfg
-           .RegisterServicesFromAssemblyContaining<DepositOnBalanceCommandHandler>());
+            .RegisterServicesFromAssemblyContaining<CreateLotCommandHandler>());
+            #endregion
 
+            #region BidCommands
             services.AddMediatR(cfg => cfg
-           .RegisterServicesFromAssemblyContaining<BidPlacingCommandHandler>());
+            .RegisterServicesFromAssemblyContaining<BidPlacingCommandHandler>());
+            #endregion
 
-            // services.AddMediatR(cfg => cfg
-            //.RegisterServicesFromAssemblyContaining<>());
 
             // services.AddMediatR(cfg => cfg
             //.RegisterServicesFromAssemblyContaining<>());

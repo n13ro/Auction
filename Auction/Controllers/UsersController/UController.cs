@@ -43,5 +43,15 @@ namespace Auction.Controllers.UsersController
 
         }
 
+        [Authorize]
+        [HttpPost("closeLot")]
+        public async Task CloseLot(CloseLotCommand cmd)
+        {
+            int userId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            cmd.userId = userId;
+            await _mediator.Send(cmd);
+        }
+
     }
 }

@@ -4,13 +4,6 @@ using Domain.Users;
 using Infrastructure.Persistence.Context;
 using Infrastructure.Persistence.Repositores.Users.DTOs;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Domain.Lots.Lot;
 
 namespace Infrastructure.Persistence.Repositores.Users
 {
@@ -84,12 +77,18 @@ namespace Infrastructure.Persistence.Repositores.Users
             var lot = await _ctx.Lots
                 .Include(lot => lot.Bids)
                 .SingleOrDefaultAsync(k => k.Id == lotId);
+
             //last bid by amount
             var last = await _ctx.Bids
+                .Where(b => b.LotId == lotId)
                 .OrderByDescending(b => b.Amount)
                 .FirstOrDefaultAsync();
 
-            if( user != null && lot != null)
+            var ownerLot = await _ctx.Users
+                .Where(k => k.Id == userId)
+                .AnyAsync(k => k.Lots.Any(k=> k.Id == lotId));
+
+            if( user != null && lot != null && !ownerLot)
             {
                 if(amount <= user.Balance && (last?.Amount == null || amount > last.Amount))
                 {
@@ -107,21 +106,47 @@ namespace Infrastructure.Persistence.Repositores.Users
                     await _ctx.SaveChangesAsync();
 
                 }
+                else
+                {
+                    throw new Exception("Error amount");
+                }
 
+            }
+            else
+            {
+                throw new Exception("Your owner or null");
             }
 
 
 
         }
 
-        public Task<bool> CanUserBidOnLotAsync(int userId, int lotId, long amount)
-        {
-            throw new NotImplementedException();
-        }
 
-        public Task WithdrawWonBidsAsync(int userId, int lotId)
+        public async Task CloseLotAsync(int userId, int lotId)
         {
-            throw new NotImplementedException();
+            try
+            {
+
+                var ownerLot = await _ctx.Users
+                    .Where(k => k.Id == userId)
+                    .AnyAsync(k => k.Lots.Any(k => k.Id == lotId));
+
+                var thisLot = await _ctx.Lots.FirstOrDefaultAsync(k=> k.Id == lotId);
+
+                if (ownerLot && thisLot != null)
+                {
+                    thisLot.CloseLotByUser();
+                    await _ctx.SaveChangesAsync();
+                }
+                else
+                {
+                    throw new Exception("Null lot");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Operation fail");
+            }
         }
     }
 }

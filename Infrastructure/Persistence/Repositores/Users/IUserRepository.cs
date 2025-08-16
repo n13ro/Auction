@@ -16,6 +16,7 @@ namespace Infrastructure.Persistence.Repositores.Users
         Task<User> GetByEmailUserAsync(string email);
         Task PlaceBidAsync(int userId, int lotId, long amount);
         Task DepositOnBalanceAsync(int id, long amount);
+        Task CloseLotAsync(int userId, int lotId);
 
     }
 }

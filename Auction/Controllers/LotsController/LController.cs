@@ -1,4 +1,5 @@
 ﻿using Application.Services.LotService.Command;
+using Application.Services.UserService.Command;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +18,7 @@ namespace Auction.Controllers.LotsController
         }
 
         [Authorize]
-        [HttpPost]
+        [HttpPost("createLot")]
         public async Task Create(CreateLotCommand cmd)
         {
             var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -32,6 +33,8 @@ namespace Auction.Controllers.LotsController
                 IsExtraTime = cmd.IsExtraTime,
                 LotLife = cmd.LotLife
             });
-        }   
+        }
+
+        
     }
 }

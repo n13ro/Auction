@@ -22,6 +22,7 @@ namespace Infrastructure
             services.AddScoped<IBidRepository, BidRepository>();
 
             services.AddHostedService<LotAutoCloser>();
+            services.AddHostedService<WithdrawWonBid>();
             return services;
         }
     }

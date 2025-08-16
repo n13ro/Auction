@@ -24,11 +24,8 @@ namespace Infrastructure.Background
         }
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            var originalColor = Console.ForegroundColor;
-            Console.ForegroundColor = ConsoleColor.Red;
+            
             _logger.LogInformation("Lot closing algorithm has started.");
-            Console.ForegroundColor = originalColor;
-            //_logger.LogInformation("Lot closing algorithm has started.");
             while (!stoppingToken.IsCancellationRequested)
             {
                 

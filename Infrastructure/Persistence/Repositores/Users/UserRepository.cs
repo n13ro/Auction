@@ -26,7 +26,7 @@ namespace Infrastructure.Persistence.Repositores.Users
         {
             var byUser = await _ctx.Users.FindAsync(id);
 
-            return byUser;
+            return await _ctx.Users.FindAsync(id);
         }
 
         public async Task CreateUserAsync(User user)
@@ -77,41 +77,90 @@ namespace Infrastructure.Persistence.Repositores.Users
 
         public async Task PlaceBidAsync(int userId, int lotId, long amount)
         {
-            //user by id
-            var user = await _ctx.Users.FindAsync(userId);
+            await using var transaction = await _ctx.Database.BeginTransactionAsync();
+            try
+            {
+                var user = await _ctx.Users.FindAsync(userId);
+                var lot = await _ctx.Lots
+                    .Include(lot => lot.Bids)
+                    .SingleOrDefaultAsync(k => k.Id == lotId);
+
+                //last bid by amount
+                var last = await _ctx.Bids
+                    .Where(b => b.lotId == lotId)
+                    .OrderByDescending(b => b.Amount)
+                    .FirstOrDefaultAsync();
+
+                var ownerLot = await _ctx.Users
+                    .Where(k => k.Id == userId)
+                    .AnyAsync(k => k.Lots.Any(k => k.Id == lotId));
+
+
+                if (user != null && lot != null && !ownerLot)
+                {                      
+                    if (amount > 0 && amount <= user.Balance && amount > last?.Amount)
+                    {
+                        var nextBid = new Bid(amount);
+                        nextBid.SetUserId(userId);
+                        nextBid.SetLotId(lotId);
+                        nextBid.MarkAsWinning();
+                        lot?.AddBid(nextBid);
+                        lot?.ExtendTime();
+                        await _ctx.Bids.AddAsync(nextBid);
+                        await _ctx.SaveChangesAsync();
+                        await transaction.CommitAsync();
+                    }
+                    else
+                    {
+                        throw new Exception("Wrong amount!");
+                    }
+                }
+                else
+                {
+                    throw new Exception("Invalid data!");
+                }
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                throw new Exception("Error trying place bid on lot");
+            }
 
             //all lots and all bids in this lot
-            var lot = await _ctx.Lots
-                .Include(lot => lot.Bids)
-                .SingleOrDefaultAsync(k => k.Id == lotId);
 
-            //last bid by amount
-            var last = await _ctx.Bids
-                .OrderByDescending(b => b.Amount)
-                .FirstOrDefaultAsync();
+            //user?.Withdraw(amount);
 
-            var nextBid = new Bid(amount);
-            nextBid.SetUserId(userId);
-            nextBid.SetLotId(lotId);
-            nextBid.MarkAsWinning();
-
-            lot?.AddBid(nextBid);
-            lot?.ExtendTime();
-
-            user?.Withdraw(amount);
-
-            await _ctx.Bids.AddAsync(nextBid);
-            await _ctx.SaveChangesAsync();
         }
 
-        public Task<bool> CanUserBidOnLotAsync(int userId, int lotId, long amount)
+        //public Task<bool> CanUserBidOnLotAsync(int userId, int lotId, long amount)
+        //{
+        //    throw new NotImplementedException();
+        //}
+        public async Task CloseLotAsync(int userId, int lotId)
         {
-            throw new NotImplementedException();
-        }
+            try
+            {
+                var lot = await _ctx.Lots
+                    .Include(lot => lot.Bids)
+                    .SingleOrDefaultAsync(k => k.Id == lotId);
 
-        public Task WithdrawWonBidsAsync(int userId, int lotId)
-        {
-            throw new NotImplementedException();
+                var ownerLot = await _ctx.Users
+                    .Where(k => k.Id == userId)
+                    .AnyAsync(k => k.Lots.Any(k => k.Id == lotId));
+
+                if (lot != null && ownerLot)
+                {
+                    lot.CloseLotByUser();
+                }
+                else
+                {
+                    throw new Exception("Error trying closing lot!");
+                }
+            }
+            catch
+            {
+                throw new Exception("Operation failed!");
+            }
         }
     }
 }

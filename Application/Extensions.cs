@@ -16,23 +16,39 @@ namespace Application
         public static IServiceCollection AddApplication
             (this IServiceCollection services) //IConfiguration configuration)
         {
-            services.AddMediatR(cfg => cfg
-            .RegisterServicesFromAssemblyContaining<CreateUserCommandHandler>());
+            #region USER COMMANDS
 
             services.AddMediatR(cfg => cfg
+            .RegisterServicesFromAssemblyContaining<CreateUserCommandHandler>());
+            services.AddMediatR(cfg => cfg
             .RegisterServicesFromAssemblyContaining<UpdateUserDataCommandHandler>());
+            services.AddMediatR(cfg => cfg
+           .RegisterServicesFromAssemblyContaining<CloseLotCommandHandler>());
+            services.AddMediatR(cfg => cfg
+           .RegisterServicesFromAssemblyContaining<DepositOnBalanceCommandHandler>());
+
+            #endregion
+
+            #region LOT COMMANDS
 
             services.AddMediatR(cfg => cfg
            .RegisterServicesFromAssemblyContaining<CreateLotCommandHandler>());
 
+            #endregion
+
+            #region AUTH COMMANDS
+
             services.AddMediatR(cfg => cfg
            .RegisterServicesFromAssemblyContaining<LoginCommandHandler>());
 
-            services.AddMediatR(cfg => cfg
-           .RegisterServicesFromAssemblyContaining<DepositOnBalanceCommandHandler>());
+            #endregion
+
+            #region BID COMMANDS
 
             services.AddMediatR(cfg => cfg
            .RegisterServicesFromAssemblyContaining<BidPlacingCommandHandler>());
+
+            #endregion
 
             return services;
         }

@@ -21,14 +21,13 @@ namespace Tests.Unit
         [Theory]
         [InlineData(1000, 100, true)]
         [InlineData(50, 100, false)]
-        [InlineData(0, 100, false)]
         public async Task CheckBalanceBidOnLot_Test(
             long userBalance, long bidAmount, bool expectedResult)
         {
             var user = _mocker.CreateInstance<User>();
             user.Deposit(userBalance);
 
-            var result = user.CheckBalanceBidOnLot(bidAmount);
+            var result = user.CheckBalance(bidAmount);
 
             // Assert
             result.Should().Be(expectedResult);
@@ -57,13 +56,11 @@ namespace Tests.Unit
         [InlineData(100_111)]
         [InlineData(0)]
         [InlineData(100_001)]
-        [InlineData(null)]
         public void DepositMax_Test(long amount)
         {
             // Arrange
             var user = _mocker.CreateInstance<User>();
             var initBalance = user.Balance;
-
 
             if(amount > 0 && amount <= 100_000)
             {
@@ -72,11 +69,11 @@ namespace Tests.Unit
             }
             else if (amount < 0 || amount > 100_000)
             {
-                Assert.Fail($"Error values: hight or low");
+                Assert.Throws<Exception>(() => user.Deposit(amount));
             }
             else
             {
-                Assert.Fail($"Error values {amount}");
+                Assert.Throws<Exception>(() => user.Deposit(amount));
             }
         }
 

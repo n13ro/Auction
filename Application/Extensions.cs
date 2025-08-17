@@ -1,6 +1,7 @@
 ﻿using Application.Services.BidService.Command;
 using Application.Services.LoginService;
 using Application.Services.LotService.Command;
+using Application.Services.LotService.Queries;
 using Application.Services.UserService.Command;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -42,6 +43,8 @@ namespace Application
             #region LotCommands
             services.AddMediatR(cfg => cfg
             .RegisterServicesFromAssemblyContaining<CreateLotCommandHandler>());
+            services.AddMediatR(cfg => cfg
+            .RegisterServicesFromAssemblyContaining<GetAllLotsQueryHandler>());
             #endregion
 
             /// <summary>

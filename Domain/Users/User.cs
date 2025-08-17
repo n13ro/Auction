@@ -61,15 +61,10 @@ namespace Domain.Users
 
         public void Deposit(long amount)
         {
-            if (amount > 0 && amount <= 100_000)
-            {
-                Balance += amount;
-                SetUpdate();
-            }
-            else
-            {
-                throw new Exception("Amount < 0 or > 100.000");
-            }
+
+            Balance += amount;
+            SetUpdate();
+
         }
 
         public void ReturnMoney(long amount)
@@ -80,15 +75,14 @@ namespace Domain.Users
 
         public void Withdraw(long amount)
         {
+
             if (CheckBalance(amount))
             {
                 Balance -= amount;
                 SetUpdate();
             }
-            else 
-            {
-                throw new Exception("Not enough money");
-            }
+
+            
         }
 
         public bool CheckBalance(long amount)

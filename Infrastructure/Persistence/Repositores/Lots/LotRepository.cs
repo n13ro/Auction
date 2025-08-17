@@ -15,10 +15,18 @@ namespace Infrastructure.Persistence.Repositores.Lots
     /// </summary>
     public interface ILotRepository
     {
+        /// <summary>
+        /// Запросы к лоту формата GET
+        /// </summary>
+        /// <returns></returns>
+        Task<IEnumerable<Lot>> GetAllAsync();
+
+        /// <summary>
+        /// Запросы к лоту формата POST
+        /// </summary>
         Task<Lot> CreateLotAsync(int userId, string name,
             string description, long startingPrice,
            long minBet, bool isExtraTime, double lotLife);
-
         Task CloseLotAsync(Lot lot);
         Task CloseLotByUserAsync(Lot lot);
     }
@@ -61,22 +69,20 @@ namespace Infrastructure.Persistence.Repositores.Lots
             long minBet, bool isExtraTime, double lotLife)
         {
             var user = await _ctx.Users.FindAsync(userId);
-                //if (user != null)
-            {
-                Lot newLot = new(name, description,
+            
+            Lot newLot = new(name, description,
                                 startingPrice, minBet,
                                 isExtraTime, lotLife);
+            user?.AddLot(newLot);
+            user?.UpdateToLastModified();
+            await _ctx.Lots.AddAsync(newLot);
+            await _ctx.SaveChangesAsync();
+            return newLot;
+        }
 
-                user?.AddLot(newLot);
-                user?.UpdateToLastModified();
-
-                await _ctx.Lots.AddAsync(newLot);
-                await _ctx.SaveChangesAsync();
-
-                return newLot;
-                //}
-                //return null;
-            }
+        public async Task<IEnumerable<Lot>> GetAllAsync()
+        {
+            return await _ctx.Lots.ToListAsync();
         }
     }
 }

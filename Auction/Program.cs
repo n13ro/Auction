@@ -42,6 +42,40 @@ namespace Auction
                         Email = "auzateamind@gmail.com"
                     },
                 });
+                #region SwaggerDocsAuthBearer
+                var securityScheme = new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Description = "Введите только ваш JWT токен:\r\n\r\n" + 
+                                  "Пример: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer",
+                    BearerFormat = "JWT",
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+
+                };
+             
+                options.AddSecurityDefinition("Bearer", securityScheme);
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer",
+                            }
+                        },
+                        Array.Empty<string>()
+                    }
+                });
+                #endregion
             });
 
 
@@ -58,8 +92,9 @@ namespace Auction
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
-                app.UseSwagger(o => 
-                    o.OpenApiVersion = OpenApiSpecVersion.OpenApi2_0);
+                app.UseSwagger(//o => 
+                    //o.OpenApiVersion = OpenApiSpecVersion.OpenApi2_0
+                    );
                 app.UseSwaggerUI();
                 
             }

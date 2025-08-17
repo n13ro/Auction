@@ -77,9 +77,23 @@ namespace Infrastructure.Persistence.Repositores.Users
 
         public async Task DepositOnBalanceAsync(int id, long amount)
         {
-            var user = await _ctx.Users.FindAsync(id);
-            user?.Deposit(amount);
-            await _ctx.SaveChangesAsync();
+            try
+            {
+                var user = await _ctx.Users.FindAsync(id);
+                if(user != null && (amount > 0 && amount <= 100.000))
+                {
+                    user.Deposit(amount);
+                    await _ctx.SaveChangesAsync();
+                }
+                else
+                {
+                    throw new Exception("Error, user is null");
+                }
+            }
+            catch(Exception ex)
+            {
+                throw new Exception($"Error {ex}");
+            }
         }
 
         /// <summary>

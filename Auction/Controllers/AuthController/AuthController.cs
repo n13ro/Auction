@@ -47,9 +47,11 @@ namespace Auction.Controllers.AuthController
         [SwaggerResponse(500, "Внутренняя ошибка сервера")]
         public async Task<ActionResult<string>> SignIn([FromBody] CreateUserCommand cmd)
         {
-            await _mediator.Send(cmd);
             var access = _jwtService.CreateToken(cmd.Id, cmd.Email, cmd.NickName);
-            return Ok(access);
+            var (rt, exp) = _jwtService.CreateRefreshToken();
+            await _mediator.Send(cmd);
+            
+            return Ok(new { accessToken = access, refreshToken = rt, expire = exp});
         }
 
         /// <summary>
@@ -72,11 +74,25 @@ namespace Auction.Controllers.AuthController
         [SwaggerResponse(400, "Некорректные данные входа")]
         [SwaggerResponse(401, "Неверный email или пароль")]
         [SwaggerResponse(500, "Внутренняя ошибка сервера")]
-        public async Task<ActionResult<string>> Login([FromBody] LoginCommand cmd)
+        public async Task<ActionResult<string>> Login([FromBody] LoginWithTokenCommand cmd)
         {
-            var (id, email, nick) = await _mediator.Send(cmd);
-            var access = _jwtService.CreateToken(id, email, nick);
-            return Ok(access);
+            return Ok(await _mediator.Send(cmd));
+        }
+
+        /// <summary>
+        /// Аутентифицирует пользователя и возвращает JWT c Refresh токеном
+        /// </summary>
+        /// <param name="cmd">Доп. данные для входа в систему</param>
+        /// <returns>JWT токен для аутентификации</returns>
+        /// <response code="200">Пользователь успешно аутентифицирован и получен токен</response>
+        /// <response code="400">Некорректные данные входа</response>
+        /// <response code="401">Неверный email или пароль</response>
+        /// <response code="500">Внутренняя ошибка сервера</response>
+        [AllowAnonymous]
+        [HttpPost("Refresh")]
+        public async Task<ActionResult<string>> Refresh([FromBody] RefreshTokenCommand cmd)
+        {
+            return Ok(await _mediator.Send(cmd));
         }
     }
 }

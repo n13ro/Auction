@@ -1,6 +1,7 @@
 ﻿using Domain.Users;
 using Infrastructure.Persistence.Repositores.Users;
 using MediatR;
+using Registration.JWT;
 
 
 namespace Application.Services.UserService.Command
@@ -10,7 +11,6 @@ namespace Application.Services.UserService.Command
     /// </summary>
     public class CreateUserCommand : IRequest
     {
-
         public int Id { get; set; }
         public string NickName { get; set; }
         public string Email { get; set; }
@@ -23,10 +23,12 @@ namespace Application.Services.UserService.Command
     public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand>
     {
         private readonly IUserRepository _userRpository;
+        private readonly IJWTService _jwt;
 
-        public CreateUserCommandHandler(IUserRepository userRepository)
+        public CreateUserCommandHandler(IUserRepository userRepository, IJWTService jwt)
         {
             _userRpository = userRepository;
+            _jwt = jwt;
         }
 
         public async Task Handle(CreateUserCommand request, CancellationToken cancellationToken)
@@ -39,6 +41,8 @@ namespace Application.Services.UserService.Command
             if (request != null)
             {
                 await _userRpository.CreateUserAsync(newUser);
+                var (rt, exp) = _jwt.CreateRefreshToken();
+                newUser.SetRefreshToken(rt, exp);
             }
 
         }

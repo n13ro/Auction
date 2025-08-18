@@ -17,6 +17,7 @@ namespace Infrastructure.Persistence.Configurations
                 .WithMany()
                 .UsingEntity(j => j.ToTable("LotsUsers"));
 
+            builder.HasIndex(u => u.RefreshToken);
 
         }
     }

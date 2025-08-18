@@ -20,7 +20,9 @@ namespace Application
             /// </summary>
             #region AuthCommands
             services.AddMediatR(cfg => cfg
-            .RegisterServicesFromAssemblyContaining<LoginCommandHandler>());
+            .RegisterServicesFromAssemblyContaining<LoginWithTokenCommandHandler>());
+            services.AddMediatR(cfg => cfg
+            .RegisterServicesFromAssemblyContaining<RefreshTokenCommandHandler>());
             #endregion
 
             /// <summary>

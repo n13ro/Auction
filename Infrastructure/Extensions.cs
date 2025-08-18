@@ -36,6 +36,7 @@ namespace Infrastructure
             /// </summary>
             services.AddHostedService<LotAutoCloser>();
             services.AddHostedService<WithdrawWonBid>();
+            services.AddHostedService<CheckRefreshTokenLife>();
 
             return services;
         }

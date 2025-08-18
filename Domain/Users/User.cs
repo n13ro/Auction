@@ -24,6 +24,10 @@ namespace Domain.Users
         public string Password { get; private set; }
         public long Balance { get; private set; }
 
+        public string? RefreshToken { get; private set; }
+        public DateTime? RefreshTokenLife { get; private set; }
+
+
         private readonly List<Lot> _lots = new();
         private readonly List<Bid> _bids = new();
         public ICollection<Lot> Lots => _lots;
@@ -111,6 +115,20 @@ namespace Domain.Users
         /// </summary>
         public void UpdateToLastModified()
         {
+            SetUpdate();
+        }
+
+
+        public void SetRefreshToken(string refreshToken, DateTime life)
+        {
+            RefreshToken = refreshToken;
+            RefreshTokenLife = life;
+            SetUpdate();
+        }
+        public void RevorkeRefreshToken()
+        {
+            RefreshToken = null;
+            RefreshTokenLife = null;
             SetUpdate();
         }
 

@@ -2,6 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 
@@ -13,7 +14,8 @@ namespace Registration.JWT
     public interface IJWTService
     {
         string CreateToken(int userId, string email, string nickName);
-        //string ValidationToken(string token);
+        (string rt, DateTime lifeTime) CreateRefreshToken(double life = 10);
+
     }
 
     /// <summary>
@@ -59,8 +61,17 @@ namespace Registration.JWT
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        //public string ValidationToken(string token)
-        //{ 
-        //}
+        public (string rt, DateTime lifeTime) CreateRefreshToken(double life = 10)
+        {
+            var bytes = RandomNumberGenerator.GetBytes(64);
+            if(bytes != null)
+            {
+                return (Convert.ToHexString(bytes), DateTime.UtcNow.AddMinutes(life));
+            }
+            else
+            {
+                throw new InvalidDataException("Error data");
+            }
+        }
     }
 }

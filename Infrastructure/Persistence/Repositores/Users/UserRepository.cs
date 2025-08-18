@@ -19,6 +19,11 @@ namespace Infrastructure.Persistence.Repositores.Users
         Task DepositOnBalanceAsync(int id, long amount);
         Task CloseLotAsync(int userId, int lotId);
 
+        Task<User> GetByRefreshTokenAsync(string rt);
+
+        Task SetRefreshTokenAsync(int userId, string refreshToken, DateTime life);
+        Task RevorkeRefreshTokenAsync(int userId);
+
     }
 
 
@@ -188,6 +193,34 @@ namespace Infrastructure.Persistence.Repositores.Users
             {
                 throw new Exception("Operation fail");
             }
+        }
+
+        public async Task SetRefreshTokenAsync(int userId, string refreshToken, DateTime life)
+        {
+            var user = await _ctx.Users.FindAsync(userId);
+            if(user != null)
+            {
+                user.SetRefreshToken(refreshToken, life);
+                await _ctx.SaveChangesAsync();
+            }
+            else
+            {
+                throw new InvalidDataException("Error enter data");
+            }
+        }
+
+        public async Task RevorkeRefreshTokenAsync(int userId)
+        {
+            var user = await _ctx.Users.FindAsync(userId);
+            if (user == null) return;
+            user.RevorkeRefreshToken();
+            await _ctx.SaveChangesAsync();
+        }
+
+        public async Task<User?> GetByRefreshTokenAsync(string rt)
+        {
+            return await _ctx.Users.FirstOrDefaultAsync(x => x.RefreshToken == rt);
+                
         }
     }
 }

@@ -44,6 +44,7 @@ namespace Domain.Lots
         public Lot(string name, string description, long startingPrice, 
             long minBet,bool isExtraTime,double lotLife)
         {
+            ValidateLotData(name,description,startingPrice,minBet,lotLife);
             Name = name;
             Description = description;
             StartingPrice = startingPrice;
@@ -54,9 +55,39 @@ namespace Domain.Lots
             SetUpdate();
         }
 
-       /// <summary>
-       /// Активное ли время или нет?
-       /// </summary>
+        private void ValidateLotData(string name, string description, long startingPrice, long minBet, double lotLife)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ValidationException("Название лота не может быть пустым");
+
+            if (name.Length < 4 || name.Length > 20)
+                throw new ValidationException("Название лота должно быть от 4 до 20 символов");
+
+            if (string.IsNullOrWhiteSpace(description))
+                throw new ValidationException("Описание лота не может быть пустым");
+
+            if (description.Length < 4 || description.Length > 20)
+                throw new ValidationException("Описание лота должно быть от 4 до 20 символов");
+
+            if (startingPrice < 1000)
+                throw new ValidationException("Начальная цена должна быть не менее 1000");
+
+            if (minBet < 100)
+                throw new ValidationException("Минимальная ставка должна быть не менее 100");
+
+            if (minBet > startingPrice)
+                throw new ValidationException("Минимальная ставка не может быть больше начальной цены");
+
+            if (lotLife <= 0)
+                throw new ValidationException("Время жизни лота должно быть положительным");
+
+            if (lotLife > 1440) // 24 часа в минутах
+                throw new ValidationException("Время жизни лота не может превышать 24 часа");
+        }
+
+        /// <summary>
+        /// Активное ли время или нет?
+        /// </summary>
         public bool IsActive =>
             Status == LotStatus.Active &&
             DateTime.UtcNow >= StartTime &&

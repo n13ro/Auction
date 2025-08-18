@@ -32,7 +32,7 @@ namespace Auction.Controllers.LotsController
         /// <response code="400">Некорректные данные лотов</response>
         /// <response code="401">Пользователь не авторизован</response>
         /// <response code="500">Внутренняя ошибка сервера</response>
-        [HttpGet("getAll")]
+        [HttpGet("v1/getAll")]
         [SwaggerOperation(
             Summary = "Создание нового лота",
             Description = "Создает новый лот для аукциона с указанными параметрами. Пользователь должен быть авторизован. Лот автоматически становится активным после создания.",
@@ -61,7 +61,7 @@ namespace Auction.Controllers.LotsController
         /// <response code="401">Пользователь не авторизован</response>
         /// <response code="500">Внутренняя ошибка сервера</response>
         [Authorize]
-        [HttpPost("createLot")]
+        [HttpPost("v1/createLot")]
         [SwaggerOperation(
             Summary = "Создание нового лота",
             Description = "Создает новый лот для аукциона с указанными параметрами. Пользователь должен быть авторизован. Лот автоматически становится активным после создания.",

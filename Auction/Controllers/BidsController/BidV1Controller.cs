@@ -34,7 +34,7 @@ namespace Auction.Controllers.BidsController
         /// <response code="409">Лот уже закрыт или неактивен</response>
         /// <response code="500">Внутренняя ошибка сервера</response>
         [Authorize]
-        [HttpPost("placeBid")]
+        [HttpPost("v1/placeBid")]
         [SwaggerOperation(
             Summary = "Размещение ставки на лот",
             Description = "Размещает ставку на указанный лот. Ставка должна быть больше минимальной ставки лота и текущей максимальной ставки. У пользователя должно быть достаточно средств на балансе.",

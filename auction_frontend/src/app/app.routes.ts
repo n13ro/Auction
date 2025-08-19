@@ -3,18 +3,18 @@ import { Main } from './main/main';
 import { Register } from './register/register';
 import { Login } from './login/login';
 import { Lot } from './lot/lot';
-import { Bet } from './bet/bet';
 import { UserPage } from './user-page/user-page';
 import { Carousel } from './carousel/carousel';
 import { CreateLot } from './create-lot/create-lot';
+import { Test } from './test/test';
 
 export const routes: Routes = [
-    {path: '',component:Main},
+    {path: '',component:Test},
     {path: 'register', component:Register},
     {path: 'login', component: Login},
     {path: 'lot', component:Lot},
-    {path: 'test', component:Bet},
     {path: 'me', component:UserPage},
     {path: 'car', component:Carousel},
-    {path: 'a', component: CreateLot}
+    {path: 'a', component: CreateLot},
+    {path: 'test', component: Test}
 ];

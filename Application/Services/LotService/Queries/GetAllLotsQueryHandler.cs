@@ -26,6 +26,7 @@ namespace Application.Services.LotService.Queries
             var all = await _lotRepository.GetAllAsync();
             return all.Select(lot => new LotResponse
             {
+                Id = lot.Id,
                 Name = lot.Name,
                 Description = lot.Description,
                 StartingPrice = lot.StartingPrice,

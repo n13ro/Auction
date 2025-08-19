@@ -13,7 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\BidService\DTOs\" />
     <Folder Include="Services\BidService\Queries\" />
     <Folder Include="Services\LotService\Command\" />
     <Folder Include="Services\UserService\Queries\" />

@@ -58,7 +58,7 @@ namespace Auction.Controllers.LotsController
         /// <response code="400">Некорректные данные лота</response>
         /// <response code="401">Пользователь не авторизован</response>
         /// <response code="500">Внутренняя ошибка сервера</response>
-        [HttpGet("v1/{lotId}")]
+        [HttpGet("v1/getById/{lotId}/getBids")]
         [SwaggerOperation(
             Summary = "Получение лота",
             Description = "Получите лот аукциона. Пользователь не обязан быть авторизован",
@@ -68,10 +68,9 @@ namespace Auction.Controllers.LotsController
         [SwaggerResponse(400, "Некорректные данные лота")]
         //[SwaggerResponse(401, "Пользователь не авторизован")]
         [SwaggerResponse(500, "Внутренняя ошибка сервера")]
-        public async Task<IEnumerable<LotResponse>> GetByLot(int lotId)
+        public async Task<LotResponse> GetByLot(int lotId)
         {
-            var all = await _mediator.Send();
-            return all;
+            return await _mediator.Send(new GetByIdLotQuery { LotId = lotId });
 
         }
 

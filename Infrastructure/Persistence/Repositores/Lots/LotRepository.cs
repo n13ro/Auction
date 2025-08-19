@@ -20,7 +20,7 @@ namespace Infrastructure.Persistence.Repositores.Lots
         /// </summary>
         /// <returns></returns>
         Task<IEnumerable<Lot>> GetAllAsync();
-        Task<Lot> GetByIdLot(int lotId);
+        Task<Lot> GetByIdLotAsync(int lotId);
         /// <summary>
         /// Запросы к лоту формата POST
         /// </summary>
@@ -85,9 +85,12 @@ namespace Infrastructure.Persistence.Repositores.Lots
             return await _ctx.Lots.ToListAsync();
         }
 
-        public Task<Lot> GetByIdLot(int lotId)
+        public Task<Lot> GetByIdLotAsync(int lotId)
         {
-            return _ctx.Lots.FirstAsync(k => k.Id == lotId);
+            return _ctx.Lots
+                .Include(k=> k.Bids)
+                .ThenInclude(k => k.User)
+                .FirstAsync(k => k.Id == lotId);
         }
     }
 }

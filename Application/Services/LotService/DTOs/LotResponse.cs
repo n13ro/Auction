@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Application.Services.BidService.DTOs;
+using Domain.Bids;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +11,7 @@ namespace Application.Services.LotService.DTOs
 {
     public class LotResponse
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public long StartingPrice { get; set; }
@@ -17,5 +20,7 @@ namespace Application.Services.LotService.DTOs
         public DateTime EndTime { get; set; }
         public bool IsExtraTime { get; set; }
         public LotStatus Status { get; set; } = LotStatus.Active;
+
+        public List<BidResponse> Bids { get; set; }
     }
 }

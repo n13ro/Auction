@@ -103,7 +103,7 @@ namespace Auction.Controllers.UsersController
         /// <response code="404">Лот не найден</response>
         /// <response code="500">Внутренняя ошибка сервера</response>
         [Authorize]
-        [HttpPost("v1/closeLot")]
+        [HttpPost("v1/{lotId:int}/closeLot")]
         [SwaggerOperation(
             Summary = "Закрытие лота пользователем",
             Description = "Закрывает лот, принадлежащий текущему авторизованному пользователю. Только владелец лота может его закрыть.",
@@ -115,12 +115,14 @@ namespace Auction.Controllers.UsersController
         [SwaggerResponse(403, "Нет прав для закрытия этого лота")]
         [SwaggerResponse(404, "Лот не найден")]
         [SwaggerResponse(500, "Внутренняя ошибка сервера")]
-        public async Task CloseLot(CloseLotCommand cmd)
+        public async Task CloseLot(int lotId)
         {
             int userId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
-
-            cmd.userId = userId;
-            await _mediator.Send(cmd);
+            await _mediator.Send(new CloseLotCommand
+            {
+                userId = userId,
+                lotId = lotId
+            });
         }
 
     }

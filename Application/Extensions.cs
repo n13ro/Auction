@@ -23,6 +23,8 @@ namespace Application
             .RegisterServicesFromAssemblyContaining<LoginWithTokenCommandHandler>());
             services.AddMediatR(cfg => cfg
             .RegisterServicesFromAssemblyContaining<RefreshTokenCommandHandler>());
+            services.AddMediatR(cfg => cfg
+            .RegisterServicesFromAssemblyContaining<LogoutCommandHandler>());
             #endregion
 
             /// <summary>

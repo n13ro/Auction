@@ -80,6 +80,30 @@ namespace Auction.Controllers.AuthController
         }
 
         /// <summary>
+        /// Удаляет токен для выхода с аккаунта
+        /// </summary>
+        /// <response code="200">Пользователь вышел с аккаунта</response>
+        /// <response code="400">Некорректные данные входа</response>
+        /// <response code="401">Неверный email или пароль</response>
+        /// <response code="500">Внутренняя ошибка сервера</response>
+        [AllowAnonymous]
+        [HttpPost("Logout")]
+        [SwaggerOperation(
+            Summary = "Выход с аккаунта",
+            Description = "Отзывает refresh токен пользователя.",
+            OperationId = "logout",
+            Tags = new[] { "Auth" })]
+        [SwaggerResponse(200, "Пользователь вышел с аккаунта")]
+        [SwaggerResponse(400, "Некорректные данные входа")]
+        [SwaggerResponse(401, "Неверный email или пароль")]
+        [SwaggerResponse(500, "Внутренняя ошибка сервера")]
+        public async Task<IActionResult> Logout([FromBody] LogoutCommand cmd)
+        {
+            await _mediator.Send(cmd);
+            return Ok();
+        }
+
+        /// <summary>
         /// Аутентифицирует пользователя и возвращает JWT c Refresh токеном
         /// </summary>
         /// <param name="cmd">Доп. данные для входа в систему</param>

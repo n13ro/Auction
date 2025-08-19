@@ -34,13 +34,13 @@ namespace Auction.Controllers.LotsController
         /// <response code="500">Внутренняя ошибка сервера</response>
         [HttpGet("v1/getAll")]
         [SwaggerOperation(
-            Summary = "Создание нового лота",
-            Description = "Создает новый лот для аукциона с указанными параметрами. Пользователь должен быть авторизован. Лот автоматически становится активным после создания.",
+            Summary = "Получение всех лотов",
+            Description = "Получите все лоты аукциона. Пользователь не обязан быть авторизован.",
             OperationId = "createLot",
             Tags = new[] { "LotV1" })]
         [SwaggerResponse(200, "Лот успешно создан")]
         [SwaggerResponse(400, "Некорректные данные лота")]
-        [SwaggerResponse(401, "Пользователь не авторизован")]
+        //[SwaggerResponse(401, "Пользователь не авторизован")]
         [SwaggerResponse(500, "Внутренняя ошибка сервера")]
         public async Task<IEnumerable<LotResponse>> GetAll()
         {
@@ -49,7 +49,31 @@ namespace Auction.Controllers.LotsController
             
         }
 
+        /// <summary>
+        /// Получите один лот аукциона
+        /// </summary>
+        /// <param name="lotId">Id для получения лота</param>
+        /// <returns>Результат создания лота</returns>
+        /// <response code="200">Лот успешно получен</response>
+        /// <response code="400">Некорректные данные лота</response>
+        /// <response code="401">Пользователь не авторизован</response>
+        /// <response code="500">Внутренняя ошибка сервера</response>
+        [HttpGet("v1/{lotId}")]
+        [SwaggerOperation(
+            Summary = "Получение лота",
+            Description = "Получите лот аукциона. Пользователь не обязан быть авторизован",
+            OperationId = "getByIdLot",
+            Tags = new[] { "LotV1" })]
+        [SwaggerResponse(200, "Лот успешно получен")]
+        [SwaggerResponse(400, "Некорректные данные лота")]
+        //[SwaggerResponse(401, "Пользователь не авторизован")]
+        [SwaggerResponse(500, "Внутренняя ошибка сервера")]
+        public async Task<IEnumerable<LotResponse>> GetByLot(int lotId)
+        {
+            var all = await _mediator.Send();
+            return all;
 
+        }
 
         /// <summary>
         /// Создает новый лот для аукциона

@@ -86,6 +86,17 @@ namespace Auction
                 o.ColorBehavior = Microsoft.Extensions.Logging.Console.LoggerColorBehavior.Enabled;
             });
 
+            // Добавляем CORS для всех
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowedHosts", policy =>
+                {
+                    policy.AllowAnyOrigin()
+                          .AllowAnyMethod()
+                          .AllowAnyHeader();
+                });
+            });
+
 
             var app = builder.Build();
 
@@ -98,6 +109,9 @@ namespace Auction
                 app.UseSwaggerUI();
                 
             }
+
+            // Включаем CORS (ВАЖНО: до UseAuthentication!)
+            app.UseCors("AllowedHosts");
 
             app.UseHttpsRedirection();
 

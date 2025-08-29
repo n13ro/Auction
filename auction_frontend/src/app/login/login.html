@@ -4,9 +4,9 @@
   <div class="login-box">
     <div class="title">PASCALL</div>
     <form>
-      <input type="email" placeholder="email" required />
-      <input type="password" placeholder="password" required />
-      <button class="login-btn" (click) = "Login('john', './images/image.png')" type="submit">LOG IN</button>
+      <input #email type="email" placeholder="email" required />
+      <input #password type="password" placeholder="password" required />
+      <button class="login-btn" (click) = "Login(email.value, password.value)" type="submit">LOG IN</button>
     </form>
   </div>
 </div>

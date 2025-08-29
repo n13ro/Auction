@@ -2,6 +2,7 @@ import { NgIf } from '@angular/common';
 import { Component, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from '../user';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-header',
@@ -10,16 +11,23 @@ import { User } from '../user';
   styleUrl: './header.scss'
 })
 export class Header {
+  private jwtBuffer: any;
   protected menu:boolean = false;
   @Output() show = new EventEmitter<void>();
   constructor(
     private router: Router,
-    private user: User
+    private user: User,
+    private http: HttpClient
   ){}
   logOut(){
+    this.http.post('https://localhost:7243/api/Auth/Logout', {
+      "refreshToken": this.user.refreshToken
+    }).subscribe()
     this.user.picture = null;
     this.user.name = null;
-    this.goTo('login');
+    this.user.accessToken = null;
+    this.user.refreshToken = null;
+    this.goTo('/');
   }
   getName(){
     return this.user.name;
@@ -46,6 +54,14 @@ export class Header {
     else{
       this.router.navigate([path]);
     }
+    
+    this.http.post('https://localhost:7243/api/Auth/Refresh', {
+      "refreshToken": this.user.refreshToken
+    }).subscribe((data) =>(
+      this.jwtBuffer = data,
+      this.user.accessToken = this.jwtBuffer.accessToken,
+      this.user.refreshToken = this.jwtBuffer.refreshToken
+    ))
   }
 }
 

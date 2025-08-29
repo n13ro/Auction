@@ -4,9 +4,10 @@
   <div class="register-box">
     <div class="title">PASCALL</div>
     <form>
-      <input type="email" placeholder="email" required />
-      <input type="password" placeholder="password" required />
-      <button class="register-btn" (click) = "Register('john', './images/image.png')" type="submit">REGISTER</button>
+      <input #name placeholder="name" required />
+      <input #email type="email" placeholder="email" required />
+      <input #password type="password" placeholder="password" required />
+      <button class="register-btn" (click) = "Register(name.value, email.value, password.value)" type="submit">REGISTER</button>
     </form>
   </div>
 </div>

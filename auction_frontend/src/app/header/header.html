@@ -27,7 +27,7 @@
         <img src='images/search.svg'>
         <input class="searchLine">
     </div>
-    <div class="return" *ngIf="getUrl()=='/lot'">
+    <div class="return" *ngIf="getUrl()=='/lot'||getUrl()=='/me'">
         <img class="click" (click)="goTo('/')" src="./images/return.svg">
     </div>
 </div>  

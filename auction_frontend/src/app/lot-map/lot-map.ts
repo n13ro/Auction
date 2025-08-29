@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { NgClass, NgFor, NgIf } from '@angular/common';
 import { Router } from '@angular/router';
 import { CreateLot } from '../create-lot/create-lot';
+import { HttpClient } from '@angular/common/http';
+import { User } from '../user';
 
 @Component({
   selector: 'app-lot-map',
@@ -10,12 +12,15 @@ import { CreateLot } from '../create-lot/create-lot';
   styleUrl: './lot-map.scss'
 })
 export class LotMap {
+  private jwtBuffer: any;
   name: string = "Название предмета";
   date: string = "11:11:11";
   price: string = "30.000p.";
   image: string = "./images/image.png";
   constructor(
-    private router: Router
+    private router: Router,
+    private user: User,
+    private http: HttpClient
   ){}
 
   public arr = Array.from({length: 50}, () => ({
@@ -40,6 +45,13 @@ export class LotMap {
     return this.arr[index].image;
   }
   goTo(path: string){
+    this.http.post('https://localhost:7243/api/Auth/Refresh', {
+      "refreshToken": this.user.refreshToken
+    }).subscribe((data) =>(
+      this.jwtBuffer = data,
+      this.user.accessToken = this.jwtBuffer.accessToken,
+      this.user.refreshToken = this.jwtBuffer.refreshToken
+    ))
     this.router.navigate([path]);
   }
 }

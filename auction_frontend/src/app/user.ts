@@ -5,8 +5,9 @@ import { Injectable } from '@angular/core';
 })
 export class User {
   public name: string | null = null;
-  public picture: string | null = null;
-
+  public picture: string | null = "./images/default-user.jpg";
+  public accessToken: string | null = null;
+  public refreshToken: string | null = null;
   
 
   setUser(name: string, picture:string) {
